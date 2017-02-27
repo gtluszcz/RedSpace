@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE14D6741E64980A00927E50 /* Planet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE14D6731E64980A00927E50 /* Planet.swift */; };
 		AE25D6311E6351C5005E9D0E /* Chunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE25D6301E6351C5005E9D0E /* Chunk.swift */; };
 		AECD43EB1E63236C00DE3BB8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECD43EA1E63236C00DE3BB8 /* AppDelegate.swift */; };
 		AECD43EF1E63236C00DE3BB8 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = AECD43EE1E63236C00DE3BB8 /* Actions.sks */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AE14D6731E64980A00927E50 /* Planet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Planet.swift; path = "../../../../../henryk/Desktop/Project Space/Space/Space/Planet.swift"; sourceTree = "<group>"; };
 		AE25D6301E6351C5005E9D0E /* Chunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Chunk.swift; path = "../../../../../henryk/Desktop/Project Space/Space/Space/Chunk.swift"; sourceTree = "<group>"; };
 		AECD43E71E63236C00DE3BB8 /* Space.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Space.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AECD43EA1E63236C00DE3BB8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			children = (
 				AECD441E1E6335E400DE3BB8 /* Spaceship.swift */,
 				AE25D6301E6351C5005E9D0E /* Chunk.swift */,
+				AE14D6731E64980A00927E50 /* Planet.swift */,
 				AECD43EA1E63236C00DE3BB8 /* AppDelegate.swift */,
 				AECD43EE1E63236C00DE3BB8 /* Actions.sks */,
 				AECD43F01E63236C00DE3BB8 /* GameScene.swift */,
@@ -278,6 +281,7 @@
 				AECD43F11E63236C00DE3BB8 /* GameScene.swift in Sources */,
 				AECD43F31E63236C00DE3BB8 /* GameViewController.swift in Sources */,
 				AE25D6311E6351C5005E9D0E /* Chunk.swift in Sources */,
+				AE14D6741E64980A00927E50 /* Planet.swift in Sources */,
 				AECD441F1E6335E400DE3BB8 /* Spaceship.swift in Sources */,
 				AECD43EB1E63236C00DE3BB8 /* AppDelegate.swift in Sources */,
 			);
