@@ -14,19 +14,21 @@ class Chunk: SKSpriteNode{
     //MARK: PROPERTIES
     
     var gridPos = CGPoint(x: 0, y: 0)
-    
+    var textbox = SKLabelNode()
     
     //MARK: - INIT
     
-    init(scene: GameScene, gridx: Int, gridy: Int, viewsize: CGSize){
-        let hue = CGFloat(arc4random() % 255) / 255
-        let sizetmp = CGSize(width: viewsize.height, height: viewsize.height)
-        super.init(texture: nil, color: UIColor(red: hue, green: hue, blue: hue, alpha: 255), size: sizetmp)
+    init(scene: GameScene, gridx: CGFloat, gridy: CGFloat, viewsize: CGSize){
+        var sizetmp = CGSize(width: viewsize.width, height: viewsize.width)
+        if viewsize.height >= viewsize.width {
+            sizetmp = CGSize(width: viewsize.height, height: viewsize.height)
+        }
+        super.init(texture: nil, color: UIColor.clear, size: sizetmp)
         setup(gridx: gridx, gridy: gridy)
         
         
         /// Testing positions textbox
-        let textbox = SKLabelNode(text: String(gridx)+":"+String(gridy))
+        textbox = SKLabelNode(text: String(Int(gridx))+":"+String(Int(gridy)))
         textbox.fontSize = 200
         textbox.zPosition = 99
         textbox.fontColor = UIColor.orange
@@ -43,18 +45,19 @@ class Chunk: SKSpriteNode{
     
     //MARK: - SETUP
     
-    func setup(gridx: Int, gridy: Int) {
+    func setup(gridx: CGFloat, gridy: CGFloat) {
         moveTo(gridx: gridx, gridy: gridy)
     }
     
     
     //MARK: - FUNCTIONALITY
     
-    func moveTo(gridx: Int, gridy: Int) {
+    func moveTo(gridx: CGFloat, gridy: CGFloat) {
         
         self.gridPos = CGPoint(x: gridx, y: gridy)
         position.x = self.gridPos.x * self.size.width
         position.y = self.gridPos.y * self.size.height
+        textbox.text = String(Int(gridx))+":"+String(Int(gridy))
 
     }
 }

@@ -16,7 +16,7 @@ class GameScene: SKScene {
     var Player = Spaceship()
     let cameraNode = SKCameraNode()
     var chunks = [Chunk]()
-    
+
     
     //MARK: - INIT
     
@@ -26,7 +26,7 @@ class GameScene: SKScene {
         //creating chunks
         for i in -1...1{
             for j in -1...1{
-                let chunk = Chunk(scene: self, gridx: i, gridy: j, viewsize: size)
+                let chunk = Chunk(scene: self, gridx: CGFloat(i), gridy: CGFloat(j), viewsize: size)
                 chunks.append(chunk)
             }
         }
@@ -54,6 +54,7 @@ class GameScene: SKScene {
         for chunk in chunks{
             self.addChild(chunk)
         }
+        print(Player)
     }
     
     override func didMove(to view: SKView) {
@@ -68,8 +69,53 @@ class GameScene: SKScene {
         }
     }
     
+    //MARK: - UPDATE
+    
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
         self.camera!.position = Player.position
+        updateChunks()
     }
+    
+    func updateChunks(){
+
+        for chunk in chunks{
+            var gridx = chunk.gridPos.x
+            var gridy = chunk.gridPos.y
+            let lastposx = gridx
+            let lastposy = gridy
+            
+            if Player.position.x - chunk.position.x > 2 * chunk.size.width {
+                gridx += 3
+            }
+            else if Player.position.x - chunk.position.x < -2 * chunk.size.width {
+                gridx += -3
+            }
+            if Player.position.y - chunk.position.y > 2 * chunk.size.height {
+                gridy += 3
+            }
+            else if Player.position.y - chunk.position.y < -2 * chunk.size.height {
+                gridy += -3
+            }
+            if lastposx != gridx || lastposy != gridy {
+                chunk.moveTo(gridx: gridx, gridy: gridy)
+            }
+            
+            
+        }
+        
+    }
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
