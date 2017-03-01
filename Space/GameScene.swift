@@ -16,7 +16,7 @@ class GameScene: SKScene {
     var Player = Spaceship()
     let cameraNode = SKCameraNode()
     var chunks = [Chunk]()
-
+    let globalseed = Int(arc4random() % 10) << 59 | (1 & 0xFFFF)
     
     //MARK: - INIT
     
@@ -26,11 +26,10 @@ class GameScene: SKScene {
         //creating chunks
         for i in -1...1{
             for j in -1...1{
-                let chunk = Chunk(scene: self, gridx: CGFloat(i), gridy: CGFloat(j), viewsize: size)
+                let chunk = Chunk(scene: self, gridx: CGFloat(i), gridy: CGFloat(j), viewsize: size, seed: globalseed)
                 chunks.append(chunk)
             }
         }
-        
         setup()
     }
     
@@ -98,7 +97,10 @@ class GameScene: SKScene {
                 gridy += -3
             }
             if lastposx != gridx || lastposy != gridy {
+                chunk.removeAllChildren()
                 chunk.moveTo(gridx: gridx, gridy: gridy)
+                chunk.addobjects(seed: globalseed)
+                
             }
             
             
