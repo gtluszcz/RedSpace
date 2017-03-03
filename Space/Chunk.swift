@@ -67,21 +67,21 @@ class Chunk: SKSpriteNode{
         textbox.fontColor = UIColor.white
         textbox.horizontalAlignmentMode = .center
         textbox.verticalAlignmentMode = .center
-        self.addChild(textbox)
+        //self.addChild(textbox)
         
         //Bounding edges
         let path = CGPath(rect: self.frame, transform: nil)
         let outline = SKShapeNode(path: path)
         outline.strokeColor = UIColor.black
         outline.zPosition = 99
-        addChild(outline)
+        //addChild(outline)
         outline.position.x = -1 * self.position.x
         outline.position.y = -1 * self.position.y
         
 
         //setting the random number generator
         let rs = GKMersenneTwisterRandomSource()
-        rs.seed = UInt64(seed + (Int(self.gridPos.x) << 16) + Int(self.gridPos.y))
+        rs.seed = UInt64(seed + Int(self.gridPos.x) * 10 + Int(self.gridPos.y))
         let rd = GKRandomDistribution(randomSource: rs, lowestValue: (Int(self.size.width) / Int(-4)), highestValue: (Int(self.size.width) / Int(4)))
         
         
@@ -89,24 +89,58 @@ class Chunk: SKSpriteNode{
         let randx = CGFloat(rd.nextInt())
         let randy = CGFloat(rd.nextInt())
         let divisionPoint = CGPoint(x: randx, y: randy)
-        let planet1 = Planet(radius: 3, position: divisionPoint, color: UIColor.green)
-        self.addChild(planet1)
+        //let planet1 = Planet(radius: 3, position: divisionPoint, color: UIColor.green)
+        //self.addChild(planet1)
     
         
         //generate object in divided uper-left section
-        let upLeftCenter = CGPoint(x: ((self.size.width / -2) + divisionPoint.x) / 2, y: ((self.size.height / 2) + divisionPoint.y) / 2)
-    
-        var radius : CGFloat = 0
-        if abs(upLeftCenter.x - divisionPoint.x) <= abs(upLeftCenter.y - divisionPoint.y){
-            radius = abs(upLeftCenter.x - divisionPoint.x)
-        }
-        else{
-            radius = abs(upLeftCenter.y - divisionPoint.y)
-        }
-        let planet = Planet(radius: radius, position: upLeftCenter, color: UIColor.purple)
-        self.addChild(planet)
+        let upLeftCenter = CGPoint(x: ((self.size.width / -2)), y: ((self.size.height / 2)))
+        makeobject(lpoint: upLeftCenter, rpoint: divisionPoint, seed: rs.seed,  random: rs)
         
+        //generate object in divided bottom-left section
+        let downLeftCenter = CGPoint(x: ((self.size.width / -2)), y: ((self.size.height / -2)))
+        makeobject(lpoint: divisionPoint, rpoint: downLeftCenter, seed: rs.seed, random: rs)
+        
+        //generate object in divided upper-right section
+        let upRightCenter = CGPoint(x: ((self.size.width / 2)), y: ((self.size.height / 2)))
+        makeobject(lpoint: upRightCenter, rpoint: divisionPoint, seed: rs.seed,  random: rs)
+        
+        //generate object in divided bottom-right section
+        let downRightCenter = CGPoint(x: ((self.size.width / 2)), y: ((self.size.height / -2)))
+        makeobject(lpoint: downRightCenter, rpoint: divisionPoint, seed: rs.seed, random: rs)
         
         
     }
+    
+    func makeobject(lpoint: CGPoint, rpoint: CGPoint, seed: UInt64, random: GKRandomSource){
+        //measure container
+        let recwidth = abs(lpoint.x - rpoint.x)
+        let recheight = abs(lpoint.y - rpoint.y)
+        let reccenter = CGPoint(x: (lpoint.x + rpoint.x) / 2, y: (lpoint.y + rpoint.y) / 2)
+        let recsize = min(recwidth, recheight)
+        
+        
+        //let planet1 = Planet(radius: 3, position: reccenter, color: UIColor.yellow)
+        //self.addChild(planet1)
+        //make random
+        let rd = GKRandomDistribution(randomSource: random, lowestValue: (Int(recsize) / Int(-4)), highestValue: (Int(recsize) / Int(4)))
+        
+        //measure object position
+        let objcenter = CGPoint(x: reccenter.x + CGFloat(rd.nextInt()), y: reccenter.y + CGFloat(rd.nextInt()))
+        let objradius = min(abs(lpoint.x - objcenter.x),abs(lpoint.y - objcenter.y),abs(rpoint.x - objcenter.x),abs(rpoint.y - objcenter.y))
+        
+        //radnomize objects
+        let rd2 = GKRandomDistribution(randomSource: random, lowestValue: 0, highestValue: 999)
+        let tmp = rd2.nextInt()
+        if tmp > 500 {
+            let planet = Planet(radius: objradius, position: objcenter, color: UIColor.purple, unit: self.dim)
+            self.addChild(planet)
+        }
+        else if tmp > 0 && tmp <= 500 {
+            let bomb = Bombfield(position: objcenter, maxradius: objradius, unit: self.dim)
+            self.addChild(bomb)
+        }
+        
+    }
+    
 }

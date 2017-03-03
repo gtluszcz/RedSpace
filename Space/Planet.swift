@@ -18,9 +18,15 @@ class Planet: SKShapeNode{
     override init() {
         super.init()
     }
-    convenience init(radius: CGFloat, position: CGPoint, color: UIColor) {
+    convenience init(radius: CGFloat, position: CGPoint, color: UIColor, unit: CGFloat) {
         self.init()
-        self.init(circleOfRadius: radius)
+        if radius < (30 * unit){
+            self.init(circleOfRadius: radius)
+        }
+        else{
+            self.init(circleOfRadius: 30 * unit)
+        }
+
         setup(position: position, color: color)
     }
     

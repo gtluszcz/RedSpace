@@ -16,12 +16,13 @@ class GameScene: SKScene {
     var Player = Spaceship()
     let cameraNode = SKCameraNode()
     var chunks = [Chunk]()
-    let globalseed = Int(arc4random() % 10) << 59 | (1 & 0xFFFF)
+    var globalseed : Int=Int(arc4random() % 1000)
     
     //MARK: - INIT
     
     override init(size: CGSize) {
         super.init(size: size)
+        
         
         //creating chunks
         for i in -1...1{
@@ -53,7 +54,6 @@ class GameScene: SKScene {
         for chunk in chunks{
             self.addChild(chunk)
         }
-        print(Player)
     }
     
     override func didMove(to view: SKView) {
