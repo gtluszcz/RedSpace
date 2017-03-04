@@ -67,14 +67,14 @@ class Chunk: SKSpriteNode{
         textbox.fontColor = UIColor.white
         textbox.horizontalAlignmentMode = .center
         textbox.verticalAlignmentMode = .center
-        //self.addChild(textbox)
+        self.addChild(textbox)
         
         //Bounding edges
         let path = CGPath(rect: self.frame, transform: nil)
         let outline = SKShapeNode(path: path)
         outline.strokeColor = UIColor.black
         outline.zPosition = 99
-        //addChild(outline)
+        addChild(outline)
         outline.position.x = -1 * self.position.x
         outline.position.y = -1 * self.position.y
         
@@ -132,11 +132,11 @@ class Chunk: SKSpriteNode{
         //radnomize objects
         let rd2 = GKRandomDistribution(randomSource: random, lowestValue: 0, highestValue: 999)
         let tmp = rd2.nextInt()
-        if tmp > 500 {
+        if tmp > 800 {
             let planet = Planet(radius: objradius, position: objcenter, color: UIColor.purple, unit: self.dim)
             self.addChild(planet)
         }
-        else if tmp > 0 && tmp <= 500 {
+        else if tmp > 500 && tmp <= 800 {
             let bomb = Bombfield(position: objcenter, maxradius: objradius, unit: self.dim)
             self.addChild(bomb)
         }

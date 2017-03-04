@@ -7,12 +7,12 @@
 //
 
 import SpriteKit
+import GameplayKit
 class Bombfield: SKShapeNode{
     //MARK: PROPERTIES
-    
+    var size: CGSize!
     
     //MARK: - INIT
-    
     override init() {
         super.init()
     }
@@ -20,11 +20,13 @@ class Bombfield: SKShapeNode{
         self.init()
         if maxradius*0.8 < (10 * unit){
             self.init(circleOfRadius: maxradius*0.8)
+            self.size = CGSize(width: maxradius*0.8*2, height: maxradius*0.8*2)
         }
         else{
             self.init(circleOfRadius: 10 * unit)
+            self.size = CGSize(width: 10 * unit * 2, height: 10 * unit*2)
         }
-        setup(position: position, maxradius: maxradius)
+        setup(position: position, maxradius: maxradius, unit: unit)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -33,11 +35,16 @@ class Bombfield: SKShapeNode{
     
     //MARK: - SETUP
     
-    func setup(position: CGPoint, maxradius: CGFloat){
+    func setup(position: CGPoint, maxradius: CGFloat, unit: CGFloat){
         self.position = position
         self.fillColor = UIColor.clear
         self.strokeColor = UIColor.red
         self.zPosition = 98
+        
+        let mine = Mine()
+        self.addChild(mine)
+        
+        physicsBody = SKPhysicsBody(circleOfRadius: self.size.width / 2)
     }
     
 

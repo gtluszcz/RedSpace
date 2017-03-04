@@ -12,7 +12,7 @@ import GameplayKit
 class GameScene: SKScene {
     
     //MARK: GLOBALS
-    
+    var Starfield:SKEmitterNode!
     var Player = Spaceship()
     let cameraNode = SKCameraNode()
     var chunks = [Chunk]()
@@ -41,7 +41,17 @@ class GameScene: SKScene {
     //MARK: - SETUP
     
     func setup(){
+        //add player on screen
         self.addChild(Player)
+        
+        //set star background
+        Starfield = SKEmitterNode(fileNamed: "Starfield")
+        self.addChild(Starfield)
+        
+        
+        //set physics world
+        self.physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        
         
         //setting coordinate system
         let anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -51,6 +61,7 @@ class GameScene: SKScene {
         self.addChild(cameraNode)
         self.camera = cameraNode
         
+        //add chunks on screen
         for chunk in chunks{
             self.addChild(chunk)
         }
@@ -61,6 +72,7 @@ class GameScene: SKScene {
 
     }
     
+    //MARK: - TOUCHES
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches{
@@ -73,6 +85,7 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
         self.camera!.position = Player.position
+        Starfield.position = Player.position
         updateChunks()
     }
     
@@ -107,6 +120,8 @@ class GameScene: SKScene {
         }
         
     }
+    
+    
     
 }
 

@@ -17,7 +17,7 @@ class Spaceship: SKSpriteNode{
     // MARK: - INIT
     
     init(){
-        let texture = SKTexture(imageNamed: "Spaceship")
+        let texture = SKTexture(imageNamed: "statek ")
         super.init(texture: texture, color: UIColor.clear,size: texture.size())
         setup()
     }

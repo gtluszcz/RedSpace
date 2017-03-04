@@ -38,8 +38,10 @@ class Planet: SKShapeNode{
     
     func setup(position: CGPoint, color: UIColor){
         self.position = position
-        self.fillColor = color
-        self.strokeColor = color
+        self.fillColor = SKColor.white
+        self.strokeColor = UIColor.clear
         self.zPosition = 98
+        self.fillTexture = SKTexture(imageNamed: "planet1")
+    
     }
 }
