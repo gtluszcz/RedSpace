@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "510330676.596222"
+            timestampString = "510428491.832282"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
             landmarkName = "GameScene"
             landmarkType = "3">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "510330676.596222"
+            timestampString = "510432060.467837"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
             landmarkName = "updateChunks()"
             landmarkType = "7">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "510330676.596222"
+            timestampString = "510432060.467837"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
             landmarkName = "updateChunks()"
             landmarkType = "7">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "510330676.596222"
+            timestampString = "510432060.467837"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
             landmarkName = "updateChunks()"
             landmarkType = "7">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "510330676.596222"
+            timestampString = "510432060.467837"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "updateChunks()"
             landmarkType = "7">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "510330676.596222"
+            timestampString = "510432060.467837"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
             landmarkName = "updateChunks()"
             landmarkType = "7">
          </BreakpointContent>
@@ -335,6 +335,84 @@
             endingLineNumber = "13"
             landmarkName = "PhysicsCategory"
             landmarkType = "14">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Space/GameScene.swift"
+            timestampString = "510428491.832282"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "GameScene"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Space.GameScene.joystick.getter : Swift.ImplicitlyUnwrappedOptional&lt;__ObjC.SKShapeNode&gt;"
+                  moduleName = "Space"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Henryk/Desktop/Project%20Space/Space/Space/GameScene.swift"
+                  timestampString = "510416695.689427"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "48">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Space.GameScene.joystick.setter : Swift.ImplicitlyUnwrappedOptional&lt;__ObjC.SKShapeNode&gt;"
+                  moduleName = "Space"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Henryk/Desktop/Project%20Space/Space/Space/GameScene.swift"
+                  timestampString = "510416695.691833"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "76">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Space.GameScene.init (size : __C.CGSize) -&gt; Space.GameScene"
+                  moduleName = "Space"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Henryk/Desktop/Project%20Space/Space/Space/GameScene.swift"
+                  timestampString = "510416695.693909"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "264">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Space.GameScene.init (coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;Space.GameScene&gt;"
+                  moduleName = "Space"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Henryk/Desktop/Project%20Space/Space/Space/GameScene.swift"
+                  timestampString = "510416695.696014"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "260">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

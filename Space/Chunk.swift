@@ -89,6 +89,7 @@ class Chunk: SKSpriteNode{
         let randx = CGFloat(rd.nextInt())
         let randy = CGFloat(rd.nextInt())
         let divisionPoint = CGPoint(x: randx, y: randy)
+        
         //let planet1 = Planet(radius: 3, position: divisionPoint, color: UIColor.green)
         //self.addChild(planet1)
     
@@ -122,6 +123,7 @@ class Chunk: SKSpriteNode{
         
         //let planet1 = Planet(radius: 3, position: reccenter, color: UIColor.yellow)
         //self.addChild(planet1)
+        
         //make random
         let rd = GKRandomDistribution(randomSource: random, lowestValue: (Int(recsize) / Int(-4)), highestValue: (Int(recsize) / Int(4)))
         

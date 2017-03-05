@@ -16,13 +16,17 @@ class GameScene: SKScene {
     var Player = Spaceship()
     let cameraNode = SKCameraNode()
     var chunks = [Chunk]()
-    var globalseed : Int=Int(arc4random() % 1000)
-    
+    var globalseed: Int=Int(arc4random() % 50)*50
+    var joystickone = SKShapeNode(circleOfRadius: 40)
+    var joysticktwo = SKShapeNode(circleOfRadius: 40)
+    var fingerone = [UITouch]()
+    var fingertwo = [UITouch]()
     //MARK: - INIT
     
     override init(size: CGSize) {
         super.init(size: size)
         
+        print(globalseed)
         
         //creating chunks
         for i in -1...1{
@@ -65,6 +69,7 @@ class GameScene: SKScene {
         for chunk in chunks{
             self.addChild(chunk)
         }
+
     }
     
     override func didMove(to view: SKView) {
@@ -74,16 +79,113 @@ class GameScene: SKScene {
     
     //MARK: - TOUCHES
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches{
+            if joystickone.inParentHierarchy(self) == false{
+                print("joystick 1 enabled")
+                joystickone.position = touch.location(in: self)
+                joystickone.strokeColor = UIColor.white
+                joystickone.lineWidth = 4
+            
+                let joystickpad = SKShapeNode(circleOfRadius: 25)
+                joystickpad.fillColor = UIColor.white
+                joystickpad.name = "pad"
+                joystickone.addChild(joystickpad)
+        
+                fingerone.insert(touch, at: 0)
+                self.addChild(joystickone)
+            }
+            else if joystickone.inParentHierarchy(self) == true && joysticktwo.inParentHierarchy(self) == false{
+                print("joystick 2 enabled")
+                joysticktwo.position = touch.location(in: self)
+                joysticktwo.strokeColor = UIColor.white
+                joysticktwo.lineWidth = 4
+            
+                let joystickpad = SKShapeNode(circleOfRadius: 25)
+                joystickpad.fillColor = UIColor.white
+                joystickpad.name = "pad"
+                joysticktwo.addChild(joystickpad)
+            
+                fingertwo.insert(touch, at: 0)
+                self.addChild(joysticktwo)
+            }
+        }
+        print("touch")
+    }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches{
-            Player.moveToTouchLocation(touch: touch, scene: self)
+            if !fingerone.isEmpty{
+                if touch == fingerone[0]{
+                    fingerone[0] = touch
+                }
+            }
+            if !fingertwo.isEmpty{
+                if touch == fingertwo[0]{
+                    fingertwo[0] = touch
+                
+                }
+            }
         }
     }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches{
+            if !fingerone.isEmpty{
+                if touch == fingerone[0]{
+                    joystickone.removeAllChildren()
+                    joystickone.removeFromParent()
+                    fingerone.remove(at: 0)
+                    print("joystick 1 disabled")
+                }
+            }
+            if !fingertwo.isEmpty{
+                if touch == fingertwo[0]{
+                    joysticktwo.removeAllChildren()
+                    joysticktwo.removeFromParent()
+                    fingertwo.remove(at: 0)
+                    print("joystick 2 disabled")
+                }
+            }
+        }
+    }
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches{
+            if !fingerone.isEmpty{
+                if touch == fingerone[0]{
+                    joystickone.removeAllChildren()
+                    joystickone.removeFromParent()
+                    fingerone.remove(at: 0)
+                    print("joystick 1 disabled")
+                }
+            }
+            if !fingertwo.isEmpty{
+                if touch == fingertwo[0]{
+                    joysticktwo.removeAllChildren()
+                    joysticktwo.removeFromParent()
+                    fingertwo.remove(at: 0)
+                    print("joystick 2 disabled")
+                }
+            }
+        }
+    }
+    
     
     //MARK: - UPDATE
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        if !fingerone.isEmpty && !fingertwo.isEmpty{
+            Player.moveToTouchLocation(touch: fingerone[0], joystick: joystickone, joysticktwo: joysticktwo)
+            Player.roatetotouch(touch: fingertwo[0], joystick: joysticktwo)
+        }
+        else if !fingerone.isEmpty && fingertwo.isEmpty{
+            Player.moveToTouchLocation(touch: fingerone[0], joystick: joystickone)
+            Player.roatetotouch(touch: fingerone[0], joystick: joystickone)
+        }
+        else if fingerone.isEmpty && !fingertwo.isEmpty {
+            Player.moveToTouchLocation(touch: fingertwo[0], joystick: joysticktwo)
+            Player.roatetotouch(touch: fingertwo[0], joystick: joysticktwo)
+        }
         self.camera!.position = Player.position
         Starfield.position = Player.position
         updateChunks()

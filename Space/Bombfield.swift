@@ -37,9 +37,10 @@ class Bombfield: SKShapeNode{
     
     func setup(position: CGPoint, maxradius: CGFloat, unit: CGFloat){
         self.position = position
-        self.fillColor = UIColor.clear
-        self.strokeColor = UIColor.red
-        self.zPosition = 98
+        self.fillColor = SKColor.white
+        self.strokeColor = UIColor.clear
+        self.zPosition = 0
+        self.fillTexture = SKTexture(imageNamed: "danger")
         
         let mine = Mine()
         self.addChild(mine)
