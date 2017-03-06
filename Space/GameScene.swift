@@ -16,7 +16,7 @@ class GameScene: SKScene {
     var Player = Spaceship()
     let cameraNode = SKCameraNode()
     var chunks = [Chunk]()
-    var globalseed: Int=Int(arc4random() % 50)*50
+    var globalseed = GKARC4RandomSource()
     var joystickone = SKShapeNode(circleOfRadius: 40)
     var joysticktwo = SKShapeNode(circleOfRadius: 40)
     var fingerone = [UITouch]()
@@ -31,7 +31,7 @@ class GameScene: SKScene {
         //creating chunks
         for i in -1...1{
             for j in -1...1{
-                let chunk = Chunk(scene: self, gridx: CGFloat(i), gridy: CGFloat(j), viewsize: size, seed: globalseed)
+                let chunk = Chunk(scene: self, gridx: CGFloat(i), gridy: CGFloat(j), viewsize: size, seed: globalseed.seed)
                 chunks.append(chunk)
             }
         }
@@ -86,10 +86,12 @@ class GameScene: SKScene {
                 joystickone.position = touch.location(in: self)
                 joystickone.strokeColor = UIColor.white
                 joystickone.lineWidth = 4
+                joystickone.zPosition = 99
             
                 let joystickpad = SKShapeNode(circleOfRadius: 25)
                 joystickpad.fillColor = UIColor.white
                 joystickpad.name = "pad"
+                joystickpad.zPosition = 99
                 joystickone.addChild(joystickpad)
         
                 fingerone.insert(touch, at: 0)
@@ -100,10 +102,12 @@ class GameScene: SKScene {
                 joysticktwo.position = touch.location(in: self)
                 joysticktwo.strokeColor = UIColor.white
                 joysticktwo.lineWidth = 4
+                joysticktwo.zPosition = 99
             
                 let joystickpad = SKShapeNode(circleOfRadius: 25)
                 joystickpad.fillColor = UIColor.white
                 joystickpad.name = "pad"
+                joystickpad.zPosition = 99
                 joysticktwo.addChild(joystickpad)
             
                 fingertwo.insert(touch, at: 0)
@@ -214,7 +218,7 @@ class GameScene: SKScene {
             if lastposx != gridx || lastposy != gridy {
                 chunk.removeAllChildren()
                 chunk.moveTo(gridx: gridx, gridy: gridy)
-                chunk.addobjects(seed: globalseed)
+                chunk.addobjects(seed: globalseed.seed)
                 
             }
             

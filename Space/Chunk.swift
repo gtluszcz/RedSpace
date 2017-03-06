@@ -19,7 +19,7 @@ class Chunk: SKSpriteNode{
     
     //MARK: - INIT
     
-    init(scene: GameScene, gridx: CGFloat, gridy: CGFloat, viewsize: CGSize, seed: Int){
+    init(scene: GameScene, gridx: CGFloat, gridy: CGFloat, viewsize: CGSize, seed: Data){
         
         var sizetmp = CGSize(width: viewsize.width, height: viewsize.width)
         if viewsize.height >= viewsize.width {
@@ -42,7 +42,7 @@ class Chunk: SKSpriteNode{
     
     //MARK: - SETUP
     
-    func setup(gridx: CGFloat, gridy: CGFloat, seed: Int) {
+    func setup(gridx: CGFloat, gridy: CGFloat, seed: Data) {
         self.dim = self.size.width / 100
         moveTo(gridx: gridx, gridy: gridy)
         addobjects(seed: seed)
@@ -59,7 +59,7 @@ class Chunk: SKSpriteNode{
         
     }
     
-    func addobjects(seed: Int){
+    func addobjects(seed: Data){
         /// Testing positions textbox
         textbox = SKLabelNode(text: String(Int(self.gridPos.x))+":"+String(Int(self.gridPos.y)))
         textbox.fontSize = 60
@@ -80,8 +80,9 @@ class Chunk: SKSpriteNode{
         
 
         //setting the random number generator
-        let rs = GKMersenneTwisterRandomSource()
-        rs.seed = UInt64(seed + Int(self.gridPos.x) * 10 + Int(self.gridPos.y))
+        let returnedseed = newseed(seed: seed, x: self.gridPos.x, y: self.gridPos.y)
+        let rs = GKARC4RandomSource(seed: returnedseed)
+        
         let rd = GKRandomDistribution(randomSource: rs, lowestValue: (Int(self.size.width) / Int(-4)), highestValue: (Int(self.size.width) / Int(4)))
         
         
@@ -113,7 +114,7 @@ class Chunk: SKSpriteNode{
         
     }
     
-    func makeobject(lpoint: CGPoint, rpoint: CGPoint, seed: UInt64, random: GKRandomSource){
+    func makeobject(lpoint: CGPoint, rpoint: CGPoint, seed: Data, random: GKRandomSource){
         //measure container
         let recwidth = abs(lpoint.x - rpoint.x)
         let recheight = abs(lpoint.y - rpoint.y)
@@ -145,4 +146,16 @@ class Chunk: SKSpriteNode{
         
     }
     
+    func newseed(seed: Data, x: CGFloat, y: CGFloat) -> Data {
+        var endseed = Data()
+        endseed.append(seed)
+        endseed.removeLast(2)
+        let xxx = Int(x) % 255
+        let yyy = Int(y) % 255
+        let xx = UInt8(abs(xxx))
+        let yy = UInt8(abs(yyy))
+        endseed.append(xx)
+        endseed.append(yy)
+        return endseed
+    }
 }

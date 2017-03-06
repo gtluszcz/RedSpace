@@ -40,7 +40,7 @@ class Planet: SKShapeNode{
         self.position = position
         self.fillColor = SKColor.white
         self.strokeColor = UIColor.clear
-        self.zPosition = 98
+        self.zPosition = 10
         self.fillTexture = SKTexture(imageNamed: "planet1")
     
     }
