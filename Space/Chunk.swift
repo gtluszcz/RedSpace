@@ -12,10 +12,11 @@ import Foundation
 class Chunk: SKSpriteNode{
     
     //MARK: PROPERTIES
-    
+    var game: SKScene!
     var gridPos = CGPoint(x: 0, y: 0)
     var textbox = SKLabelNode()
     var dim : CGFloat = 0
+    
     
     //MARK: - INIT
     
@@ -26,7 +27,7 @@ class Chunk: SKSpriteNode{
             sizetmp = CGSize(width: viewsize.height, height: viewsize.height)
         }
         super.init(texture: nil, color: UIColor.clear, size: sizetmp)
-        
+        self.game = scene
         setup(gridx: gridx, gridy: gridy, seed: seed)
     
         
@@ -77,7 +78,6 @@ class Chunk: SKSpriteNode{
         addChild(outline)
         outline.position.x = -1 * self.position.x
         outline.position.y = -1 * self.position.y
-        
 
         //setting the random number generator
         let returnedseed = newseed(seed: seed, x: self.gridPos.x, y: self.gridPos.y)
@@ -136,11 +136,11 @@ class Chunk: SKSpriteNode{
         let rd2 = GKRandomDistribution(randomSource: random, lowestValue: 0, highestValue: 999)
         let tmp = rd2.nextInt()
         if tmp > 800 {
-            let planet = Planet(radius: objradius, position: objcenter, color: UIColor.purple, unit: self.dim)
+            let planet = Planet(scene: self.game, radius: objradius, position: objcenter, color: UIColor.purple, unit: self.dim)
             self.addChild(planet)
         }
         else if tmp > 500 && tmp <= 800 {
-            let bomb = Bombfield(position: objcenter, maxradius: objradius, unit: self.dim)
+            let bomb = Bombfield(scene: self.game, position: objcenter, maxradius: objradius, unit: self.dim)
             self.addChild(bomb)
         }
         
@@ -158,4 +158,12 @@ class Chunk: SKSpriteNode{
         endseed.append(yy)
         return endseed
     }
+    
+    func update(){
+        for child in self.children{
+            let bombfield =  child as? Bombfield
+            bombfield?.update()
+        }
+    }
+
 }
