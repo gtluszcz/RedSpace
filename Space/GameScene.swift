@@ -23,7 +23,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     //Groups
     var chunks = [Chunk]()
-    var bombfields = [Bombfield]()
     
     //MARK: - INIT
     
@@ -189,24 +188,48 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if collision == PhysicsCategory.Bombfield | PhysicsCategory.Player{
             contactPlayerBombfield(contact: contact)
         }
+        
+        // Handle Spaceship collision with Bombfield
+        if collision == PhysicsCategory.Mine | PhysicsCategory.Player{
+            contactPlayerMine(contact: contact)
+        }
 
     }
     
     //Contact: Spaceship - Bombfield
     func contactPlayerBombfield(contact: SKPhysicsContact){
         if contact.bodyA.categoryBitMask == PhysicsCategory.Player && contact.bodyB.categoryBitMask == PhysicsCategory.Bombfield{
-            var bombfield: Bombfield
-            bombfield = contact.bodyB.node as! Bombfield
+            let bombfield = contact.bodyB.node as! Bombfield
+            print(" <*> minefield approached")
             bombfield.activate()
-            print("contact")
+            let mine = bombfield.bomb as! Mine
+            mine.activated = true
+            
         }
         if contact.bodyA.categoryBitMask == PhysicsCategory.Bombfield && contact.bodyB.categoryBitMask == PhysicsCategory.Player{
-            var bombfield: Bombfield
-            bombfield = contact.bodyA.node as! Bombfield
+            let bombfield = contact.bodyB.node as! Bombfield
+            print(" <*> minefield approached")
             bombfield.activate()
-            print("contact")
+            let mine = bombfield.bomb as! Mine
+            mine.activated = true
+            
         }
     }
+    
+    //Contact: Spaceship - Mine
+    func contactPlayerMine(contact: SKPhysicsContact){
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Player && contact.bodyB.categoryBitMask == PhysicsCategory.Mine{
+            print(" <*> prepare for hit")
+            let mine = contact.bodyB.node as! Mine
+            mine.explode()
+        }
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Mine && contact.bodyB.categoryBitMask == PhysicsCategory.Player{
+            print(" <*> prepare for hit")
+            let mine = contact.bodyA.node as! Mine
+            mine.explode()
+        }
+    }
+
     
     //MARK: - UPDATE
     

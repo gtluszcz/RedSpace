@@ -22,6 +22,7 @@
 		AECD44061E63236D00DE3BB8 /* SpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECD44051E63236D00DE3BB8 /* SpaceTests.swift */; };
 		AECD44111E63236D00DE3BB8 /* SpaceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECD44101E63236D00DE3BB8 /* SpaceUITests.swift */; };
 		AECD441F1E6335E400DE3BB8 /* Spaceship.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECD441E1E6335E400DE3BB8 /* Spaceship.swift */; };
+		AED8B8471E8063560020F575 /* mineExhaust.sks in Resources */ = {isa = PBXBuildFile; fileRef = AED8B8461E8063560020F575 /* mineExhaust.sks */; };
 		AEF89DB51E6AFCF5007E213B /* Starfield.sks in Resources */ = {isa = PBXBuildFile; fileRef = AEF89DB41E6AFCF5007E213B /* Starfield.sks */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		AECD44101E63236D00DE3BB8 /* SpaceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceUITests.swift; sourceTree = "<group>"; };
 		AECD44121E63236D00DE3BB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AECD441E1E6335E400DE3BB8 /* Spaceship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spaceship.swift; sourceTree = SOURCE_ROOT; };
+		AED8B8461E8063560020F575 /* mineExhaust.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = mineExhaust.sks; path = "../../../../../henryk/Desktop/Project Space/Space/Space/mineExhaust.sks"; sourceTree = "<group>"; };
 		AEF89DB41E6AFCF5007E213B /* Starfield.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Starfield.sks; path = "../../../../../henryk/Desktop/Project Space/Space/Space/Starfield.sks"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				AECD441E1E6335E400DE3BB8 /* Spaceship.swift */,
+				AED8B8461E8063560020F575 /* mineExhaust.sks */,
 				AE25D6301E6351C5005E9D0E /* Chunk.swift */,
 				AE14D6731E64980A00927E50 /* Planet.swift */,
 				AE8D75221E69C954008AF821 /* Bombfield.swift */,
@@ -265,6 +268,7 @@
 				AEF89DB51E6AFCF5007E213B /* Starfield.sks in Resources */,
 				AECD43F61E63236C00DE3BB8 /* Main.storyboard in Resources */,
 				AECD43F81E63236D00DE3BB8 /* Assets.xcassets in Resources */,
+				AED8B8471E8063560020F575 /* mineExhaust.sks in Resources */,
 				AECD43FB1E63236D00DE3BB8 /* LaunchScreen.storyboard in Resources */,
 				AECD43EF1E63236C00DE3BB8 /* Actions.sks in Resources */,
 			);

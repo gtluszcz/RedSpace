@@ -13,6 +13,7 @@ class Bombfield: SKShapeNode{
     var game: SKScene!
     var size: CGSize!
     var activated: Bool = false
+    var bomb: SKSpriteNode!
     
     //MARK: - INIT
     override init() {
@@ -46,8 +47,6 @@ class Bombfield: SKShapeNode{
         self.zPosition = 0
         self.fillTexture = SKTexture(imageNamed: "danger")
         
-        let mine = Mine(scene: self.game)
-        self.addChild(mine)
         
         self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width / 2)
         self.physicsBody?.categoryBitMask = PhysicsCategory.Bombfield
@@ -61,18 +60,20 @@ class Bombfield: SKShapeNode{
         self.fillColor = UIColor.clear
         self.strokeColor = SKColor.init(red: 1, green: 0, blue: 0, alpha: 0.4)
         self.lineWidth = 4
+        //let action1 = SKAction.scale(to: 0, duration: 0.3)
+        let action3 = SKAction.scale(to: 0.3, duration: 3)
+        let action2 = SKAction.fadeOut(withDuration: 0.3)
+        let group = SKAction.group([action3, action2])
+        self.run(group)
         self.activated = true
-        print("activated")
+        print(" <*> mine activated")
     }
     
+    //MARK: - UPDATE
     func update(){
         if self.activated == true{
-            print("working")
+            print(" <*> homing missle launched")
             self.activated = false
-        }
-        for child in self.children{
-            let mine =  child as? Mine
-            mine?.update()
         }
     }
 

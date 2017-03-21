@@ -9,7 +9,7 @@
 import SpriteKit
 import Foundation
 
-class Spaceship: SKSpriteNode{
+class Spaceship: SKSpriteNode{ 
     //MARK: PROPERTIES
     var game: SKScene!
     var currentRad: CGFloat = 0
@@ -83,8 +83,10 @@ class Spaceship: SKSpriteNode{
         let dy = touch.location(in: joystick).y
         let rad = atan2(dy, dx)
         
+        if jsdist >= 10{
         let rotate = SKAction.rotate(toAngle: rad - CGFloat(M_PI / 2), duration: 0.15, shortestUnitArc:true)
         self.run(rotate)
+        }
         
         // Move joystick pads inside joysticks
         if jsdist <= 900{

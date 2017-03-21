@@ -142,6 +142,10 @@ class Chunk: SKSpriteNode{
         else if tmp > 500 && tmp <= 800 {
             let bomb = Bombfield(scene: self.game, position: objcenter, maxradius: objradius, unit: self.dim)
             self.addChild(bomb)
+            let mine = Mine(scene: self.game)
+            bomb.bomb = mine
+            mine.position = objcenter
+            self.addChild(mine)
         }
         
     }
@@ -163,6 +167,9 @@ class Chunk: SKSpriteNode{
         for child in self.children{
             let bombfield =  child as? Bombfield
             bombfield?.update()
+            
+            let mine =  child as? Mine
+            mine?.update()
         }
     }
 
