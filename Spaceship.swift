@@ -12,14 +12,16 @@ import Foundation
 class Spaceship: SKSpriteNode{ 
     //MARK: PROPERTIES
     var game: SKScene!
+    var dim: CGFloat!
     var currentRad: CGFloat = 0
     
     // MARK: - INIT
     
-    init(scene: SKScene){
+    init(scene: SKScene, size: CGSize){
         let texture = SKTexture(imageNamed: "statek")
         super.init(texture: texture, color: UIColor.clear,size: texture.size())
         self.game = scene
+        self.dim = max(size.width, size.height) / 100
         setup()
     }
     
@@ -32,7 +34,7 @@ class Spaceship: SKSpriteNode{
     func setup(){
         self.name = "player"
         size = CGSize(width: 40, height: 40)
-        speed = 5
+        speed = min(self.dim / 1.5, 5)
         self.physicsBody = SKPhysicsBody(texture: self.texture!, size: self.size)
         physicsBody!.categoryBitMask = PhysicsCategory.Player
         physicsBody!.collisionBitMask = PhysicsCategory.Planet
@@ -55,9 +57,10 @@ class Spaceship: SKSpriteNode{
         let rad = atan2(dy, dx)
         
         //move Player
-        self.position.x += speed*cos(rad)
-        self.position.y += speed*sin(rad)
-        
+        if jsdist >= 110{
+            self.position.x += speed*cos(rad)
+            self.position.y += speed*sin(rad)
+        }
         
         // Move joystick pads inside joysticks
         if jsdist <= 900{

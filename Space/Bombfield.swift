@@ -21,13 +21,13 @@ class Bombfield: SKShapeNode{
     }
     convenience init(scene: SKScene, position: CGPoint, maxradius: CGFloat, unit: CGFloat) {
         self.init()
-        if maxradius*0.8 < (10 * unit){
-            self.init(circleOfRadius: maxradius*0.8)
-            self.size = CGSize(width: maxradius*0.8*2, height: maxradius*0.8*2)
+        if maxradius < (14 * unit){
+            self.init(circleOfRadius: maxradius)
+            self.size = CGSize(width: maxradius*2, height: maxradius*2)
         }
         else{
-            self.init(circleOfRadius: 10 * unit)
-            self.size = CGSize(width: 10 * unit * 2, height: 10 * unit*2)
+            self.init(circleOfRadius: 12 * unit)
+            self.size = CGSize(width: 12 * unit * 2, height: 12 * unit*2)
         }
         self.game = scene
         setup(position: position, maxradius: maxradius, unit: unit)

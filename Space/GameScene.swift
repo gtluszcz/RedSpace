@@ -29,7 +29,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     override init(size: CGSize) {
         super.init(size: size)
         
-        Player = Spaceship(scene: self)
+        Player = Spaceship(scene: self, size: size)
         print(globalseed)
         
         //creating chunks

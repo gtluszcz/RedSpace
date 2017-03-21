@@ -136,16 +136,22 @@ class Chunk: SKSpriteNode{
         let rd2 = GKRandomDistribution(randomSource: random, lowestValue: 0, highestValue: 999)
         let tmp = rd2.nextInt()
         if tmp > 800 {
+            //Spawn planet
             let planet = Planet(scene: self.game, radius: objradius, position: objcenter, color: UIColor.purple, unit: self.dim)
             self.addChild(planet)
         }
         else if tmp > 500 && tmp <= 800 {
+            //Spawn mine and bombfield
             let bomb = Bombfield(scene: self.game, position: objcenter, maxradius: objradius, unit: self.dim)
             self.addChild(bomb)
             let mine = Mine(scene: self.game)
             bomb.bomb = mine
             mine.position = objcenter
             self.addChild(mine)
+        }
+        else if tmp > 300 && tmp <= 500 {
+            let asteroidfield = AsteroidField(scene: self.game, position: reccenter, maxradius: recsize, unit: self.dim, random: random)
+            self.addChild(asteroidfield)
         }
         
     }
