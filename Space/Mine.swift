@@ -11,7 +11,7 @@ import SpriteKit
 class Mine: SKSpriteNode{
     
     //MARK: PROPERTIES
-    var game: SKScene!
+    var game: GameScene!
     var activated = false
     var acceleration: CGFloat = 1
     var spped = 0
@@ -20,7 +20,7 @@ class Mine: SKSpriteNode{
     
     //MARK: - INIT
     
-    init(scene: SKScene){
+    init(scene: GameScene){
         let texture = SKTexture(imageNamed: "spaceParts_043")
         super.init(texture: texture, color: UIColor.clear, size: texture.size())
         self.game = scene
@@ -35,10 +35,17 @@ class Mine: SKSpriteNode{
     //MARK: - SETUP
     
     func setup(){
+        //set properties
         exhaust?.position = CGPoint(x: 0, y: -12.5)
         exhaust?.setScale(0.12)
         size = CGSize(width: 10, height: 25)
         self.name = "mine"
+        self.zPosition = 1
+        
+        //add to groups
+        self.game.mines.append(self)
+        
+        //set physics
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.categoryBitMask = PhysicsCategory.Mine
         self.physicsBody?.contactTestBitMask = PhysicsCategory.Player
@@ -47,15 +54,16 @@ class Mine: SKSpriteNode{
     }
     //MARK: - FUNCTIONALITY
     func autotarget(){
-        let game = self.game as! GameScene
+        let game = self.game
         let chunk = self.parent as! Chunk
-        let dx = (self.position.x + chunk.gridPos.x*chunk.size.width) - game.Player.position.x
-        let dy = (self.position.y + chunk.gridPos.y*chunk.size.height) - game.Player.position.y
+        let dx = (self.position.x + chunk.gridPos.x*chunk.size.width) - game!.Player.position.x
+        let dy = (self.position.y + chunk.gridPos.y*chunk.size.height) - game!.Player.position.y
         let rad = atan2(dy, dx)
         self.position.x += self.speed * -1 * cos(rad)
         self.position.y += self.speed * -1 * sin(rad)
-        let rotate = SKAction.rotate(toAngle: rad + CGFloat(M_PI/2), duration: 0.1, shortestUnitArc: true)
+        let rotate = SKAction.rotate(toAngle: rad + CGFloat(Double.pi/2), duration: 0.1, shortestUnitArc: true)
         self.run(rotate)
+        
         //self.zRotation = rad + CGFloat(M_PI/2)
         self.speed += 0.001 * self.acceleration
         self.acceleration += 2

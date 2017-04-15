@@ -13,7 +13,10 @@ class Spaceship: SKSpriteNode{
     //MARK: PROPERTIES
     var game: SKScene!
     var dim: CGFloat!
-    var currentRad: CGFloat = 0
+    var aimRotation: CGFloat = 0
+    var moveRotation: CGFloat = 0
+    var thrusters: CGFloat = 20
+    var swiftiness: CGFloat = 1.5
     
     // MARK: - INIT
     
@@ -33,12 +36,15 @@ class Spaceship: SKSpriteNode{
     
     func setup(){
         self.name = "player"
+        self.zPosition=0
         size = CGSize(width: 40, height: 40)
-        speed = min(self.dim / 1.5, 5)
         self.physicsBody = SKPhysicsBody(texture: self.texture!, size: self.size)
         physicsBody!.categoryBitMask = PhysicsCategory.Player
-        physicsBody!.collisionBitMask = PhysicsCategory.Planet
-        physicsBody!.contactTestBitMask = PhysicsCategory.Bombfield | PhysicsCategory.Mine
+        physicsBody!.collisionBitMask = PhysicsCategory.Planet | PhysicsCategory.Asteroid
+        physicsBody!.contactTestBitMask = PhysicsCategory.Minefield | PhysicsCategory.Mine
+        self.physicsBody?.linearDamping = self.swiftiness
+        
+        
 
     }
     
@@ -57,10 +63,9 @@ class Spaceship: SKSpriteNode{
         let rad = atan2(dy, dx)
         
         //move Player
-        if jsdist >= 110{
-            self.position.x += speed*cos(rad)
-            self.position.y += speed*sin(rad)
-        }
+        self.moveRotation = rad
+        move()
+        
         
         // Move joystick pads inside joysticks
         if jsdist <= 900{
@@ -86,8 +91,12 @@ class Spaceship: SKSpriteNode{
         let dy = touch.location(in: joystick).y
         let rad = atan2(dy, dx)
         
+        
+        self.physicsBody?.allowsRotation = false
+        self.physicsBody?.angularVelocity = 0
         if jsdist >= 10{
-        let rotate = SKAction.rotate(toAngle: rad - CGFloat(M_PI / 2), duration: 0.15, shortestUnitArc:true)
+        self.aimRotation = rad
+        let rotate = SKAction.rotate(toAngle: rad - CGFloat(Double.pi / 2), duration: 0.1, shortestUnitArc:true)
         self.run(rotate)
         }
         
@@ -104,8 +113,13 @@ class Spaceship: SKSpriteNode{
             
         }
     }
-    
-    
+    func move(){
+        self.physicsBody?.applyForce(CGVector(dx: self.thrusters * cos(self.moveRotation), dy: self.thrusters * sin(self.moveRotation)))        
+    }
+    func slowdown(){
+        self.physicsBody?.allowsRotation = true
+
+    }
 }
 
 

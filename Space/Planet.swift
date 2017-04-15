@@ -11,14 +11,14 @@ import SpriteKit
 class Planet: SKShapeNode{
     
     //MARK: PROPERTIES
-    var game: SKScene!
+    var game: GameScene!
     
     //MARK: - INIT
     
     override init() {
         super.init()
     }
-    convenience init(scene: SKScene, radius: CGFloat, position: CGPoint, color: UIColor, unit: CGFloat) {
+    convenience init(scene: GameScene, radius: CGFloat, position: CGPoint, color: UIColor, unit: CGFloat) {
         self.init()
         if radius < (30 * unit){
             self.init(circleOfRadius: radius)
@@ -40,7 +40,7 @@ class Planet: SKShapeNode{
         self.position = position
         self.fillColor = SKColor.white
         self.strokeColor = UIColor.clear
-        self.zPosition = 10
+        self.zPosition = 0
         self.fillTexture = SKTexture(imageNamed: "planet1")
         self.physicsBody = SKPhysicsBody(circleOfRadius: self.frame.size.width / 2)
         physicsBody!.categoryBitMask = PhysicsCategory.Planet
