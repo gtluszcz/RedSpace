@@ -148,7 +148,7 @@ class Chunk: SKSpriteNode{
             //spawn asteroidfield and asteroids
             let asteroidfield = AsteroidField(scene: self.game, position: reccenter, maxradius: recsize / 2, unit: self.dim, random: random)
             self.addChild(asteroidfield)
-            asteroidfield.spawnasteroids(random: random)
+            asteroidfield.spawnasteroids(random: random, maxradius: recsize / 2)
         }
         
     }

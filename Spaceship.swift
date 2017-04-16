@@ -11,16 +11,20 @@ import Foundation
 
 class Spaceship: SKSpriteNode{ 
     //MARK: PROPERTIES
-    var game: SKScene!
+    var game: GameScene!
     var dim: CGFloat!
     var aimRotation: CGFloat = 0
     var moveRotation: CGFloat = 0
     var thrusters: CGFloat = 20
     var swiftiness: CGFloat = 1.5
+    var laserlvl: CGFloat = 1
+    var lasttimeshoot = NSDate()
+    var shootingrarity = 0.15
+    var lastshootingcannon = 1
     
     // MARK: - INIT
     
-    init(scene: SKScene, size: CGSize){
+    init(scene: GameScene, size: CGSize){
         let texture = SKTexture(imageNamed: "statek")
         super.init(texture: texture, color: UIColor.clear,size: texture.size())
         self.game = scene
@@ -116,9 +120,32 @@ class Spaceship: SKSpriteNode{
     func move(){
         self.physicsBody?.applyForce(CGVector(dx: self.thrusters * cos(self.moveRotation), dy: self.thrusters * sin(self.moveRotation)))        
     }
-    func slowdown(){
+    func enginesoff(){
         self.physicsBody?.allowsRotation = true
 
+    }
+    func shootlasers(){
+        if lasttimeshoot.timeIntervalSinceNow < -shootingrarity {
+            lasttimeshoot = NSDate()
+            switch self.laserlvl {
+            case 1:
+                let laser = Laser(scene: self.game, laserlvl: Int(self.laserlvl), aimdirection: self.aimRotation)
+                self.game.addChild(laser)
+                let kat = atan2(11.0, 20)
+                if lastshootingcannon == 1{
+                    lastshootingcannon = 2
+                    laser.position.x = self.position.x + 25 * cos(aimRotation + CGFloat(kat))
+                    laser.position.y = self.position.y + 25 * sin(aimRotation + CGFloat(kat))
+                }
+                else if lastshootingcannon == 2{
+                    lastshootingcannon = 1
+                    laser.position.x = self.position.x + 25 * cos(aimRotation - CGFloat(kat))
+                    laser.position.y = self.position.y + 25 * sin(aimRotation - CGFloat(kat))
+                }
+            default:
+                print("wrong Spaceship.laserlevel")
+            }
+        }
     }
 }
 

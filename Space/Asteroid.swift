@@ -16,7 +16,7 @@ class Asteroid: SKSpriteNode{
     
     //MARK: - INIT
     init(scene: GameScene, kind: Int, size: CGFloat, position: CGPoint){
-        let texture = SKTexture(imageNamed: "Meteor\(kind)v3")
+        let texture = SKTexture(imageNamed: "Meteor\(kind)v4")
         super.init(texture: texture, color: UIColor.clear, size: texture.size())
         self.game = scene
         setup(size: size, position: position)
@@ -39,7 +39,7 @@ class Asteroid: SKSpriteNode{
         
         
         //define physics
-        self.physicsBody = SKPhysicsBody(circleOfRadius: max(self.size.width,self.size.height) / 2)
+        self.physicsBody = SKPhysicsBody(circleOfRadius: max(self.size.width,self.size.height) / 2 * 0.9)
         self.physicsBody?.categoryBitMask = PhysicsCategory.Asteroid
         self.physicsBody?.contactTestBitMask = PhysicsCategory.None
         self.physicsBody?.collisionBitMask = PhysicsCategory.Asteroid | PhysicsCategory.Player | PhysicsCategory.Planet

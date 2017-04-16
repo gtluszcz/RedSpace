@@ -29,6 +29,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var mines = [Mine]()
     var asteroids = [Asteroid]()
     var asteroidfields = [AsteroidField]()
+    var lasers = [Laser]()
+
     
     //MARK: - INIT
     
@@ -55,13 +57,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     //MARK: - SETUP
     
     func setup(){
+        
+        //setting camera
+        let followPlayer = SKConstraint.distance(SKRange(constantValue: 0), to: self.Player)
+        cameraNode.constraints = [followPlayer]
+        self.addChild(cameraNode)
+        self.camera = cameraNode
+        
         //add player on screen
         self.addChild(Player)
         
         //set star background
         Starfield = SKEmitterNode(fileNamed: "Starfield")
         Starfield.zPosition = -1
-        let followPlayer = SKConstraint.distance(SKRange(constantValue: 0), to: self.Player)
         Starfield.constraints = [followPlayer]
         self.addChild(Starfield)
         
@@ -76,10 +84,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let anchorPoint = CGPoint(x: 0.5, y: 0.5)
         self.anchorPoint = anchorPoint
         
-        //setting camera
-        cameraNode.constraints = [followPlayer]
-        self.addChild(cameraNode)
-        self.camera = cameraNode
         
         //add chunks on screen
         for chunk in chunks{
@@ -181,9 +185,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         // Handle Spaceship collision with Bombfield
-        if collision == PhysicsCategory.Mine | PhysicsCategory.Player{
+        else if collision == PhysicsCategory.Mine | PhysicsCategory.Player{
             contactPlayerMine(contact: contact)
         }
+        
+        // Handle Laser collision with Asteroid
+        else if collision == PhysicsCategory.Laser | PhysicsCategory.Asteroid{
+            contactLaserAsteroid(contact: contact)
+        }
+
 
     }
     
@@ -220,6 +230,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             mine.explode()
         }
     }
+    
+    //Contact: Laser - Asteroid
+    func contactLaserAsteroid(contact: SKPhysicsContact){
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Laser && contact.bodyB.categoryBitMask == PhysicsCategory.Asteroid{
+            print("<laser> hit asteroid")
+            let asteroid = contact.bodyB.node as! Asteroid
+            let laser = contact.bodyA.node as! Laser
+            laser.destroyed = true
+            let puff = SKEmitterNode(fileNamed: "Explode1")
+            puff?.position = contact.contactPoint
+            puff?.zPosition=2
+            self.addChild(puff!)
+            let disappear = SKAction.removeFromParent()
+            let delay = SKAction.wait(forDuration: TimeInterval(1))
+            let doStuff = SKAction.sequence([delay,disappear])
+            puff?.run(doStuff)
+
+            
+            
+        }
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Asteroid && contact.bodyB.categoryBitMask == PhysicsCategory.Laser{
+            print("<laser> hit asteroid")
+            let asteroid = contact.bodyA.node as! Asteroid
+            let laser = contact.bodyB.node as! Laser
+            laser.destroyed = true
+            let puff = SKEmitterNode(fileNamed: "Explode1")
+            puff?.position = contact.contactPoint
+            puff?.zPosition=2
+            self.addChild(puff!)
+            let disappear = SKAction.removeFromParent()
+            let delay = SKAction.wait(forDuration: TimeInterval(1))
+            let doStuff = SKAction.sequence([delay,disappear])
+            puff?.run(doStuff)
+        }
+    }
+
 
     
     //MARK: - UPDATE
@@ -229,6 +275,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         handlejoysticks()
         allnodesupdate()
         updateChunks()
+        print(lasers.count)
 
     }
     
@@ -236,6 +283,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if !fingerone.isEmpty && !fingertwo.isEmpty{
             Player.moveToTouchLocation(touch: fingerone[0], joystick: joystickone, joysticktwo: joysticktwo)
             Player.roatetotouch(touch: fingertwo[0], joystick: joysticktwo)
+            Player.shootlasers()
         }
         else if !fingerone.isEmpty && fingertwo.isEmpty{
             Player.moveToTouchLocation(touch: fingerone[0], joystick: joystickone)
@@ -243,10 +291,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         else if fingerone.isEmpty && !fingertwo.isEmpty {
             Player.roatetotouch(touch: fingertwo[0], joystick: joysticktwo)
-            Player.slowdown()
+            Player.enginesoff()
+            Player.shootlasers()
         }
         else if fingerone.isEmpty && fingertwo.isEmpty {
-            Player.slowdown()
+            Player.enginesoff()
         }
     }
     
@@ -289,6 +338,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         for mine in self.mines{mine.update()}
         for asteroidfield in self.asteroidfields{asteroidfield.update()}
         for asteroid in self.asteroids{asteroid.update()}
+        for laser in self.lasers{laser.update()}
+
         
         
     }
