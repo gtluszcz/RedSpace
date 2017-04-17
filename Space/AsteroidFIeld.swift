@@ -13,14 +13,14 @@ import Foundation
 class AsteroidField: SKNode{
     //MARK: PROPERTIES
     var dim: CGFloat!
-    var game: SKScene!
+    var game: GameScene!
 
     
     //MARK: - INIT
     override init(){
        super.init()
     }
-    convenience init(scene: SKScene, position: CGPoint, maxradius: CGFloat, unit: CGFloat, random: GKRandomSource) {
+    convenience init(scene: GameScene, position: CGPoint, maxradius: CGFloat, unit: CGFloat, random: GKRandomSource) {
         self.init()
         self.game = scene
         setup(position: position, maxradius: maxradius, unit: unit, random: random)
@@ -32,28 +32,61 @@ class AsteroidField: SKNode{
     
     //MARK: - SETUP
     func setup(position: CGPoint, maxradius: CGFloat, unit: CGFloat, random: GKRandomSource){
+        //set properties
         self.position = position
         self.dim = unit
-        let amountrd = GKRandomDistribution(randomSource: random, lowestValue: 4, highestValue: 11)
-        let kindrd = GKRandomDistribution(randomSource: random, lowestValue: 1, highestValue: 11)
-        let positionrd = GKRandomDistribution(randomSource: random, lowestValue: -100, highestValue: 100)
-        let amount = amountrd.nextInt()
-
-        var numtable = [Int]()
-        for i in 1..<amount+1 {
-            
-            //chose unique kind
-            var newint = kindrd.nextInt()
-            while(numtable.contains(newint)){
-                newint = kindrd.nextInt()
-            }
-            numtable.append(newint)
-            let pos = CGPoint(x: positionrd.nextInt(), y: positionrd.nextInt())
-            let asteroid = NormalAsteroid(scene: self.game, kind: newint, size: self.dim, position: pos)
-            self.addChild(asteroid)
-        }
+        //append to groups
+        self.game.asteroidfields.append(self)
+        
+        //self.spawnasteroids(random: random)
     }
     
+    //MARK: - FUNCTIONALITIES
+    func spawnasteroids(random: GKRandomSource, maxradius: CGFloat){
+        let amountrd = GKRandomDistribution(randomSource: random, lowestValue: 4, highestValue: min(Int(maxradius) / 15,11))
+        let kindrd = GKRandomDistribution(randomSource: random, lowestValue: 1, highestValue: 1000)
+        let positionrd = GKRandomDistribution(randomSource: random, lowestValue: max(-(Int)(maxradius),-150), highestValue: min(Int(maxradius),150))
+        let amount = amountrd.nextInt()
+        
+//        var numtable = [Int]()
+        for _ in 1..<amount+1 {
+            
+            //chose unique kind
+            let newint = kindrd.nextInt()
+//            while(numtable.contains(newint)){
+//                newint = kindrd.nextInt()
+//            }
+//            numtable.append(newint)
+            let pos = CGPoint(x: Int(self.position.x) + positionrd.nextInt(), y: Int(self.position.y) + positionrd.nextInt())
+            let asteroid: Asteroid!
+            switch newint {
+            case 1..<20:
+                asteroid = Asteroid(scene: self.game, kind: 1, size: self.dim, position: pos)
+//            case 5..<10:
+//                asteroid = Asteroid(scene: self.game, kind: 2, size: self.dim, position: pos)
+            case 20..<120:
+                asteroid = Asteroid(scene: self.game, kind: 3, size: self.dim, position: pos)
+            case 120..<140:
+                asteroid = Asteroid(scene: self.game, kind: 4, size: self.dim, position: pos)
+            case 140..<290:
+                asteroid = Asteroid(scene: self.game, kind: 5, size: self.dim, position: pos)
+            case 290..<505:
+                asteroid = Asteroid(scene: self.game, kind: 6, size: self.dim, position: pos)
+            case 505..<650:
+                asteroid = Asteroid(scene: self.game, kind: 7, size: self.dim, position: pos)
+            case 650..<800:
+                asteroid = Asteroid(scene: self.game, kind: 8, size: self.dim, position: pos)
+            case 800..<900:
+                asteroid = Asteroid(scene: self.game, kind: 9, size: self.dim, position: pos)
+            case 900..<1000:
+                asteroid = Asteroid(scene: self.game, kind: 10, size: self.dim, position: pos)
+            default:
+                asteroid = Asteroid(scene: self.game, kind: 5, size: self.dim, position: pos)
+            }
+            self.parent?.addChild(asteroid)
+        }
+
+    }
     //MARK: - UPDATE
     func update(){
         

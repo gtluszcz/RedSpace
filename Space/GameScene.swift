@@ -16,13 +16,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var Player: Spaceship!
     let cameraNode = SKCameraNode()
     var globalseed = GKARC4RandomSource()
-    var joystickone = SKShapeNode(circleOfRadius: 40)
-    var joysticktwo = SKShapeNode(circleOfRadius: 40)
+    var joystickone = Joystick()
+    var joysticktwo = Joystick()
     var fingerone = [UITouch]()
     var fingertwo = [UITouch]()
     
     //Groups
+    var allsprites = [Any]()
     var chunks = [Chunk]()
+    var planets = [Planet]()
+    var minefields = [Minefield]()
+    var mines = [Mine]()
+    var asteroids = [Asteroid]()
+    var asteroidfields = [AsteroidField]()
+    var lasers = [Laser]()
+
     
     //MARK: - INIT
     
@@ -33,8 +41,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         print(globalseed)
         
         //creating chunks
-        for i in -1...1{
-            for j in -1...1{
+        for i in 0...1{
+            for j in 0...1{
                 let chunk = Chunk(scene: self, gridx: CGFloat(i), gridy: CGFloat(j), viewsize: size, seed: globalseed.seed)
                 chunks.append(chunk)
             }
@@ -49,11 +57,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     //MARK: - SETUP
     
     func setup(){
+        
+        //setting camera
+        let followPlayer = SKConstraint.distance(SKRange(constantValue: 0), to: self.Player)
+        cameraNode.constraints = [followPlayer]
+        self.addChild(cameraNode)
+        self.camera = cameraNode
+        
         //add player on screen
         self.addChild(Player)
         
         //set star background
         Starfield = SKEmitterNode(fileNamed: "Starfield")
+        Starfield.zPosition = -1
+        Starfield.constraints = [followPlayer]
         self.addChild(Starfield)
         
         
@@ -67,9 +84,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let anchorPoint = CGPoint(x: 0.5, y: 0.5)
         self.anchorPoint = anchorPoint
         
-        //setting camera
-        self.addChild(cameraNode)
-        self.camera = cameraNode
         
         //add chunks on screen
         for chunk in chunks{
@@ -89,32 +103,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         for touch in touches{
             if joystickone.inParentHierarchy(self) == false{
                 print("joystick 1 enabled")
-                joystickone.position = touch.location(in: self.camera!)
-                joystickone.strokeColor = UIColor.white
-                joystickone.lineWidth = 4
-                joystickone.zPosition = 99
-            
-                let joystickpad = SKShapeNode(circleOfRadius: 25)
-                joystickpad.fillColor = UIColor.white
-                joystickpad.name = "pad"
-                joystickpad.zPosition = 99
-                joystickone.addChild(joystickpad)
-        
+                joystickone = Joystick(scene: self, radius: 40, position: touch.location(in: self.camera!))
                 fingerone.insert(touch, at: 0)
                 self.cameraNode.addChild(joystickone)
             }
             else if joystickone.inParentHierarchy(self) == true && joysticktwo.inParentHierarchy(self) == false{
                 print("joystick 2 enabled")
-                joysticktwo.position = touch.location(in: self.camera!)
-                joysticktwo.strokeColor = UIColor.white
-                joysticktwo.lineWidth = 4
-                joysticktwo.zPosition = 99
-            
-                let joystickpad = SKShapeNode(circleOfRadius: 25)
-                joystickpad.fillColor = UIColor.white
-                joystickpad.name = "pad"
-                joystickpad.zPosition = 99
-                joysticktwo.addChild(joystickpad)
+                joysticktwo = Joystick(scene: self, radius: 40, position: touch.location(in: self.camera!))
             
                 fingertwo.insert(touch, at: 0)
                 self.cameraNode.addChild(joysticktwo)
@@ -185,32 +180,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
 
         // Handle Spaceship collision with Bombfield
-        if collision == PhysicsCategory.Bombfield | PhysicsCategory.Player{
+        if collision == PhysicsCategory.Minefield | PhysicsCategory.Player{
             contactPlayerBombfield(contact: contact)
         }
         
         // Handle Spaceship collision with Bombfield
-        if collision == PhysicsCategory.Mine | PhysicsCategory.Player{
+        else if collision == PhysicsCategory.Mine | PhysicsCategory.Player{
             contactPlayerMine(contact: contact)
         }
+        
+        // Handle Laser collision with Asteroid
+        else if collision == PhysicsCategory.Laser | PhysicsCategory.Asteroid{
+            contactLaserAsteroid(contact: contact)
+        }
+
 
     }
     
-    //Contact: Spaceship - Bombfield
+    //Contact: Spaceship - Minefield
     func contactPlayerBombfield(contact: SKPhysicsContact){
-        if contact.bodyA.categoryBitMask == PhysicsCategory.Player && contact.bodyB.categoryBitMask == PhysicsCategory.Bombfield{
-            let bombfield = contact.bodyB.node as! Bombfield
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Player && contact.bodyB.categoryBitMask == PhysicsCategory.Minefield{
+            let bombfield = contact.bodyB.node as! Minefield
             print(" <*> minefield approached")
             bombfield.activate()
-            let mine = bombfield.bomb as! Mine
+            let mine = bombfield.bomb!
             mine.activated = true
             
         }
-        if contact.bodyA.categoryBitMask == PhysicsCategory.Bombfield && contact.bodyB.categoryBitMask == PhysicsCategory.Player{
-            let bombfield = contact.bodyB.node as! Bombfield
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Minefield && contact.bodyB.categoryBitMask == PhysicsCategory.Player{
+            let bombfield = contact.bodyB.node as! Minefield
             print(" <*> minefield approached")
             bombfield.activate()
-            let mine = bombfield.bomb as! Mine
+            let mine = bombfield.bomb!
             mine.activated = true
             
         }
@@ -229,6 +230,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             mine.explode()
         }
     }
+    
+    //Contact: Laser - Asteroid
+    func contactLaserAsteroid(contact: SKPhysicsContact){
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Laser && contact.bodyB.categoryBitMask == PhysicsCategory.Asteroid{
+            print("<laser> hit asteroid")
+            let asteroid = contact.bodyB.node as! Asteroid
+            let laser = contact.bodyA.node as! Laser
+            laser.destroyed = true
+            let puff = SKEmitterNode(fileNamed: "Explode1")
+            puff?.position = contact.contactPoint
+            puff?.zPosition=2
+            self.addChild(puff!)
+            let disappear = SKAction.removeFromParent()
+            let delay = SKAction.wait(forDuration: TimeInterval(1))
+            let doStuff = SKAction.sequence([delay,disappear])
+            puff?.run(doStuff)
+
+            
+            
+        }
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Asteroid && contact.bodyB.categoryBitMask == PhysicsCategory.Laser{
+            print("<laser> hit asteroid")
+            let asteroid = contact.bodyA.node as! Asteroid
+            let laser = contact.bodyB.node as! Laser
+            laser.destroyed = true
+            let puff = SKEmitterNode(fileNamed: "Explode1")
+            puff?.position = contact.contactPoint
+            puff?.zPosition=2
+            self.addChild(puff!)
+            let disappear = SKAction.removeFromParent()
+            let delay = SKAction.wait(forDuration: TimeInterval(1))
+            let doStuff = SKAction.sequence([delay,disappear])
+            puff?.run(doStuff)
+        }
+    }
+
 
     
     //MARK: - UPDATE
@@ -236,26 +273,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
         handlejoysticks()
-        self.camera!.position = Player.position
-        Starfield.position = Player.position
-        updateChunks()
         allnodesupdate()
+        updateChunks()
+        print(lasers.count)
+
     }
     
     func handlejoysticks(){
         if !fingerone.isEmpty && !fingertwo.isEmpty{
             Player.moveToTouchLocation(touch: fingerone[0], joystick: joystickone, joysticktwo: joysticktwo)
             Player.roatetotouch(touch: fingertwo[0], joystick: joysticktwo)
+            Player.shootlasers()
         }
         else if !fingerone.isEmpty && fingertwo.isEmpty{
             Player.moveToTouchLocation(touch: fingerone[0], joystick: joystickone)
             Player.roatetotouch(touch: fingerone[0], joystick: joystickone)
         }
         else if fingerone.isEmpty && !fingertwo.isEmpty {
-            Player.moveToTouchLocation(touch: fingertwo[0], joystick: joysticktwo)
             Player.roatetotouch(touch: fingertwo[0], joystick: joysticktwo)
+            Player.enginesoff()
+            Player.shootlasers()
         }
-
+        else if fingerone.isEmpty && fingertwo.isEmpty {
+            Player.enginesoff()
+        }
     }
     
     func updateChunks(){
@@ -267,23 +308,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             let lastposy = gridy
             
             // Chunk movement to symulate infinite world
-            if Player.position.x - chunk.position.x > 2 * chunk.size.width {
-                gridx += 3
+            if Player.position.x - chunk.position.x > 1 * chunk.size.width {
+                gridx += 2
             }
-            else if Player.position.x - chunk.position.x < -2 * chunk.size.width {
-                gridx += -3
+            else if Player.position.x - chunk.position.x < -1 * chunk.size.width {
+                gridx += -2
             }
-            if Player.position.y - chunk.position.y > 2 * chunk.size.height {
-                gridy += 3
+            if Player.position.y - chunk.position.y > 1 * chunk.size.height {
+                gridy += 2
             }
-            else if Player.position.y - chunk.position.y < -2 * chunk.size.height {
-                gridy += -3
+            else if Player.position.y - chunk.position.y < -1 * chunk.size.height {
+                gridy += -2
             }
             if lastposx != gridx || lastposy != gridy {
-                chunk.removeAllChildren()
+                deletechunk(target: chunk)
                 chunk.moveTo(gridx: gridx, gridy: gridy)
                 chunk.addobjects(seed: globalseed.seed)
-                
+                print(asteroids.count)
             }
             
             
@@ -291,12 +332,53 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
     }
     func allnodesupdate(){
-        for child in self.children{
-            let chunk =  child as? Chunk
-            chunk?.update()
-        }
+        for chunk in self.chunks{chunk.update()}
+        for planet in self.planets{planet.update()}
+        for minefield in self.minefields{minefield.update()}
+        for mine in self.mines{mine.update()}
+        for asteroidfield in self.asteroidfields{asteroidfield.update()}
+        for asteroid in self.asteroids{asteroid.update()}
+        for laser in self.lasers{laser.update()}
+
+        
+        
     }
     
+    func deletechunk(target: SKNode){
+        for child in target.children{
+            deletechunk(target: child)
+            child.removeFromParent()
+        }
+        switch target {
+        case let somePlanet as Planet:
+            let index = planets.index(of: somePlanet)
+            if (index != nil){
+                    planets.remove(at: index!)
+            }
+        case let someAsteroid as Asteroid:
+            let index = asteroids.index(of: someAsteroid)
+            if (index != nil){
+                asteroids.remove(at: index!)
+            }
+        case let someAsteroidField as AsteroidField:
+            let index = asteroidfields.index(of: someAsteroidField)
+            if (index != nil){
+                asteroidfields.remove(at: index!)
+            }
+        case let someMine as Mine:
+            let index = mines.index(of: someMine)
+            if (index != nil){
+                mines.remove(at: index!)
+            }
+        case let someMineField as Minefield:
+            let index = minefields.index(of: someMineField)
+            if (index != nil){
+                minefields.remove(at: index!)
+            }
+        default: break
+        }
+        
+    }
     
 }
 

@@ -11,13 +11,20 @@ import Foundation
 
 class Spaceship: SKSpriteNode{ 
     //MARK: PROPERTIES
-    var game: SKScene!
+    var game: GameScene!
     var dim: CGFloat!
-    var currentRad: CGFloat = 0
+    var aimRotation: CGFloat = 0
+    var moveRotation: CGFloat = 0
+    var thrusters: CGFloat = 20
+    var swiftiness: CGFloat = 1.5
+    var laserlvl: CGFloat = 1
+    var lasttimeshoot = NSDate()
+    var shootingrarity = 0.15
+    var lastshootingcannon = 1
     
     // MARK: - INIT
     
-    init(scene: SKScene, size: CGSize){
+    init(scene: GameScene, size: CGSize){
         let texture = SKTexture(imageNamed: "statek")
         super.init(texture: texture, color: UIColor.clear,size: texture.size())
         self.game = scene
@@ -33,12 +40,15 @@ class Spaceship: SKSpriteNode{
     
     func setup(){
         self.name = "player"
+        self.zPosition=0
         size = CGSize(width: 40, height: 40)
-        speed = min(self.dim / 1.5, 5)
         self.physicsBody = SKPhysicsBody(texture: self.texture!, size: self.size)
         physicsBody!.categoryBitMask = PhysicsCategory.Player
-        physicsBody!.collisionBitMask = PhysicsCategory.Planet
-        physicsBody!.contactTestBitMask = PhysicsCategory.Bombfield | PhysicsCategory.Mine
+        physicsBody!.collisionBitMask = PhysicsCategory.Planet | PhysicsCategory.Asteroid
+        physicsBody!.contactTestBitMask = PhysicsCategory.Minefield | PhysicsCategory.Mine
+        self.physicsBody?.linearDamping = self.swiftiness
+        
+        
 
     }
     
@@ -57,10 +67,9 @@ class Spaceship: SKSpriteNode{
         let rad = atan2(dy, dx)
         
         //move Player
-        if jsdist >= 110{
-            self.position.x += speed*cos(rad)
-            self.position.y += speed*sin(rad)
-        }
+        self.moveRotation = rad
+        move()
+        
         
         // Move joystick pads inside joysticks
         if jsdist <= 900{
@@ -86,8 +95,12 @@ class Spaceship: SKSpriteNode{
         let dy = touch.location(in: joystick).y
         let rad = atan2(dy, dx)
         
+        
+        self.physicsBody?.allowsRotation = false
+        self.physicsBody?.angularVelocity = 0
         if jsdist >= 10{
-        let rotate = SKAction.rotate(toAngle: rad - CGFloat(M_PI / 2), duration: 0.15, shortestUnitArc:true)
+        self.aimRotation = rad
+        let rotate = SKAction.rotate(toAngle: rad - CGFloat(Double.pi / 2), duration: 0.1, shortestUnitArc:true)
         self.run(rotate)
         }
         
@@ -104,8 +117,36 @@ class Spaceship: SKSpriteNode{
             
         }
     }
-    
-    
+    func move(){
+        self.physicsBody?.applyForce(CGVector(dx: self.thrusters * cos(self.moveRotation), dy: self.thrusters * sin(self.moveRotation)))        
+    }
+    func enginesoff(){
+        self.physicsBody?.allowsRotation = true
+
+    }
+    func shootlasers(){
+        if lasttimeshoot.timeIntervalSinceNow < -shootingrarity {
+            lasttimeshoot = NSDate()
+            switch self.laserlvl {
+            case 1:
+                let laser = Laser(scene: self.game, laserlvl: Int(self.laserlvl), aimdirection: self.aimRotation)
+                self.game.addChild(laser)
+                let kat = atan2(11.0, 20)
+                if lastshootingcannon == 1{
+                    lastshootingcannon = 2
+                    laser.position.x = self.position.x + 25 * cos(aimRotation + CGFloat(kat))
+                    laser.position.y = self.position.y + 25 * sin(aimRotation + CGFloat(kat))
+                }
+                else if lastshootingcannon == 2{
+                    lastshootingcannon = 1
+                    laser.position.x = self.position.x + 25 * cos(aimRotation - CGFloat(kat))
+                    laser.position.y = self.position.y + 25 * sin(aimRotation - CGFloat(kat))
+                }
+            default:
+                print("wrong Spaceship.laserlevel")
+            }
+        }
+    }
 }
 
 

@@ -12,7 +12,7 @@ import Foundation
 class Chunk: SKSpriteNode{
     
     //MARK: PROPERTIES
-    var game: SKScene!
+    var game: GameScene!
     var gridPos = CGPoint(x: 0, y: 0)
     var textbox = SKLabelNode()
     var dim : CGFloat = 0
@@ -61,6 +61,7 @@ class Chunk: SKSpriteNode{
     }
     
     func addobjects(seed: Data){
+        
         /// Testing positions textbox
         textbox = SKLabelNode(text: String(Int(self.gridPos.x))+":"+String(Int(self.gridPos.y)))
         textbox.fontSize = 60
@@ -91,9 +92,6 @@ class Chunk: SKSpriteNode{
         let randy = CGFloat(rd.nextInt())
         let divisionPoint = CGPoint(x: randx, y: randy)
         
-        //let planet1 = Planet(radius: 3, position: divisionPoint, color: UIColor.green)
-        //self.addChild(planet1)
-    
         
         //generate object in divided uper-left section
         let upLeftCenter = CGPoint(x: ((self.size.width / -2)), y: ((self.size.height / 2)))
@@ -122,9 +120,6 @@ class Chunk: SKSpriteNode{
         let recsize = min(recwidth, recheight)
         
         
-        //let planet1 = Planet(radius: 3, position: reccenter, color: UIColor.yellow)
-        //self.addChild(planet1)
-        
         //make random
         let rd = GKRandomDistribution(randomSource: random, lowestValue: (Int(recsize) / Int(-4)), highestValue: (Int(recsize) / Int(4)))
         
@@ -142,7 +137,7 @@ class Chunk: SKSpriteNode{
         }
         else if tmp > 500 && tmp <= 800 {
             //Spawn mine and bombfield
-            let bomb = Bombfield(scene: self.game, position: objcenter, maxradius: objradius, unit: self.dim)
+            let bomb = Minefield(scene: self.game, position: objcenter, maxradius: objradius, unit: self.dim)
             self.addChild(bomb)
             let mine = Mine(scene: self.game)
             bomb.bomb = mine
@@ -150,8 +145,10 @@ class Chunk: SKSpriteNode{
             self.addChild(mine)
         }
         else if tmp > 300 && tmp <= 500 {
-            let asteroidfield = AsteroidField(scene: self.game, position: reccenter, maxradius: recsize, unit: self.dim, random: random)
+            //spawn asteroidfield and asteroids
+            let asteroidfield = AsteroidField(scene: self.game, position: reccenter, maxradius: recsize / 2, unit: self.dim, random: random)
             self.addChild(asteroidfield)
+            asteroidfield.spawnasteroids(random: random, maxradius: recsize / 2)
         }
         
     }
@@ -170,13 +167,7 @@ class Chunk: SKSpriteNode{
     }
     
     func update(){
-        for child in self.children{
-            let bombfield =  child as? Bombfield
-            bombfield?.update()
-            
-            let mine =  child as? Mine
-            mine?.update()
-        }
+        
     }
 
 }
