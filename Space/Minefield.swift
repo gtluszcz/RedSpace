@@ -59,7 +59,7 @@ class Minefield: SKShapeNode{
     }
     
     //MARK: - FUNCTIONALITY
-    func activate(){
+    func activate1(){
         self.physicsBody?.categoryBitMask = PhysicsCategory.None
         self.fillColor = UIColor.clear
         self.strokeColor = SKColor.init(red: 1, green: 0, blue: 0, alpha: 0.4)
@@ -69,13 +69,23 @@ class Minefield: SKShapeNode{
         let group = SKAction.group([action3, action2])
         self.run(group)
         self.activated = true
-        print(" <*> mine activated")
+        print(" <O> homing missle launched")
+        print("  <*> mine activated")
+    }
+    
+    func activate2(){
+        self.physicsBody?.categoryBitMask = PhysicsCategory.None
+        let action3 = SKAction.scale(to: 0.3, duration: 3)
+        let action2 = SKAction.fadeOut(withDuration: 0.3)
+        let group = SKAction.group([action3, action2])
+        self.run(group)
+        self.activated = true
+        print(" <O> minefield destoryed")
     }
     
     //MARK: - UPDATE
     func update(){
         if self.activated == true{
-            print(" <*> homing missle launched")
             self.activated = false
         }
     }

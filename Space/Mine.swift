@@ -13,18 +13,20 @@ class Mine: SKSpriteNode{
     //MARK: PROPERTIES
     var game: GameScene!
     var activated = false
+    var minefield: Minefield!
     var acceleration: CGFloat = 1
     var spped = 0
     var exhaust = SKEmitterNode(fileNamed: "mineExhaust")
     var exhaustshown = false
+    var exploded = false
     
     //MARK: - INIT
     
-    init(scene: GameScene){
+    init(scene: GameScene, minefield: Minefield){
         let texture = SKTexture(imageNamed: "spaceParts_043")
         super.init(texture: texture, color: UIColor.clear, size: texture.size())
         self.game = scene
-        setup()
+        setup(minefield: minefield)
     }
     
     
@@ -34,8 +36,9 @@ class Mine: SKSpriteNode{
     
     //MARK: - SETUP
     
-    func setup(){
+    func setup(minefield: Minefield){
         //set properties
+        self.minefield = minefield
         exhaust?.position = CGPoint(x: 0, y: -12.5)
         exhaust?.setScale(0.12)
         size = CGSize(width: 10, height: 25)
@@ -50,7 +53,9 @@ class Mine: SKSpriteNode{
         self.physicsBody?.categoryBitMask = PhysicsCategory.Mine
         self.physicsBody?.contactTestBitMask = PhysicsCategory.Player
         self.physicsBody?.collisionBitMask = PhysicsCategory.None
-
+        self.physicsBody?.fieldBitMask = PhysicsCategory.None
+        
+        
     }
     //MARK: - FUNCTIONALITY
     func autotarget(){
@@ -78,8 +83,10 @@ class Mine: SKSpriteNode{
         
     }
     func explode(){
-        print(" <*> exploded")
+        print("  <*> exploded")
+        self.exploded = false
         self.activated = false
+        self.game.mines.remove(at: self.game.mines.index(of: self)!)
         self.removeFromParent()
     }
     
@@ -87,6 +94,9 @@ class Mine: SKSpriteNode{
     func update(){
         if self.activated == true{
             autotarget()
+        }
+        if self.exploded{
+            explode()
         }
     }
 }

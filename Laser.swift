@@ -12,16 +12,17 @@ class Laser: SKSpriteNode{
     //MARK: PROPERTIES
     var game: GameScene!
     var damage: CGFloat = 1
-    var flightspeed: CGFloat = 800
+    var laserspeed: CGFloat = 800
+    var laserlvl = 1
     var destroyed = false
     
     //MARK: - INIT
     
-    init(scene: GameScene, laserlvl: Int, aimdirection: CGFloat){
+    init(scene: GameScene, laserlvl: Int, damage: CGFloat, speed: CGFloat, aimdirection: CGFloat){
         let texture = SKTexture(imageNamed: "laserRed03")
         super.init(texture: texture, color: UIColor.clear, size: texture.size())
         self.game = scene
-        setup(laserlvl: laserlvl, aimdirection: aimdirection)
+        setup(laserlvl: laserlvl, damage: damage, speed: speed, aimdirection: aimdirection)
     }
     
     
@@ -31,11 +32,14 @@ class Laser: SKSpriteNode{
     
     //MARK: - SETUP
     
-    func setup(laserlvl: Int, aimdirection: CGFloat){
+    func setup(laserlvl: Int, damage: CGFloat, speed: CGFloat, aimdirection: CGFloat){
         //set properties
         self.zPosition = 1
         self.zRotation = aimdirection - CGFloat(Double.pi / 2)
         self.size = CGSize(width: 6, height: 24)
+        self.damage = damage
+        self.laserspeed = speed
+        self.laserlvl = laserlvl
         
         //add to groups
         self.game.lasers.append(self)
@@ -45,18 +49,18 @@ class Laser: SKSpriteNode{
         self.physicsBody?.categoryBitMask = PhysicsCategory.Laser
         self.physicsBody?.contactTestBitMask = PhysicsCategory.Asteroid | PhysicsCategory.Planet | PhysicsCategory.Mine
         self.physicsBody?.collisionBitMask = PhysicsCategory.None
-        self.physicsBody?.velocity = CGVector(dx: self.flightspeed * cos(aimdirection), dy: self.flightspeed * sin(aimdirection))
+        self.physicsBody?.velocity = CGVector(dx: self.laserspeed * cos(aimdirection), dy: self.laserspeed * sin(aimdirection))
         
     }
     //MARK: - FUNCTIONALITY
     func disappear(){
         if abs(self.position.x - self.game.Player.position.x) > self.game.frame.width / 2 {
-            print("<laser> destroyed")
+            //print("<|> destroyed")
             destroy()
             
         }
         else if abs(self.position.y - self.game.Player.position.y) > self.game.frame.height / 2{
-            print("<laser> destroyed")
+            //print("<|> destroyed")
             destroy()
         }
         

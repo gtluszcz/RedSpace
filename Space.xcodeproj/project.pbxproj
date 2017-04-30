@@ -27,6 +27,7 @@
 		AED25C221EA404240039F86C /* Explode1.sks in Resources */ = {isa = PBXBuildFile; fileRef = AED25C201EA404240039F86C /* Explode1.sks */; };
 		AED25C231EA404240039F86C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AED25C211EA404240039F86C /* Assets.xcassets */; };
 		AED25C261EA410C20039F86C /* Laser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED25C251EA410C20039F86C /* Laser.swift */; };
+		AED25C281EA624A40039F86C /* Collisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED25C271EA624A40039F86C /* Collisions.swift */; };
 		AED8B8471E8063560020F575 /* mineExhaust.sks in Resources */ = {isa = PBXBuildFile; fileRef = AED8B8461E8063560020F575 /* mineExhaust.sks */; };
 		AED916BD1E81537E00B4DD98 /* AsteroidFIeld.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED916BC1E81537E00B4DD98 /* AsteroidFIeld.swift */; };
 		AEF89DB51E6AFCF5007E213B /* Starfield.sks in Resources */ = {isa = PBXBuildFile; fileRef = AEF89DB41E6AFCF5007E213B /* Starfield.sks */; };
@@ -76,6 +77,7 @@
 		AED25C201EA404240039F86C /* Explode1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Explode1.sks; path = "../../../../../henryk/Desktop/Project Space/Space/Explode1.sks"; sourceTree = "<group>"; };
 		AED25C211EA404240039F86C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../../henryk/Desktop/Project Space/Space/Assets.xcassets"; sourceTree = "<group>"; };
 		AED25C251EA410C20039F86C /* Laser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Laser.swift; path = ../Laser.swift; sourceTree = "<group>"; };
+		AED25C271EA624A40039F86C /* Collisions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Collisions.swift; path = ../Collisions.swift; sourceTree = "<group>"; };
 		AED8B8461E8063560020F575 /* mineExhaust.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = mineExhaust.sks; path = "../../../../../henryk/Desktop/Project Space/Space/Space/mineExhaust.sks"; sourceTree = "<group>"; };
 		AED916BC1E81537E00B4DD98 /* AsteroidFIeld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsteroidFIeld.swift; path = "../../../../../henryk/Desktop/Project Space/Space/Space/AsteroidFIeld.swift"; sourceTree = "<group>"; };
 		AEF89DB41E6AFCF5007E213B /* Starfield.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Starfield.sks; path = "../../../../../henryk/Desktop/Project Space/Space/Space/Starfield.sks"; sourceTree = "<group>"; };
@@ -131,19 +133,20 @@
 			isa = PBXGroup;
 			children = (
 				AECD441E1E6335E400DE3BB8 /* Spaceship.swift */,
-				AE25D6301E6351C5005E9D0E /* Chunk.swift */,
-				AE99C9A51E9A9F8C00E72B7A /* Joystick.swift */,
-				AE14D6731E64980A00927E50 /* Planet.swift */,
-				AE8D75221E69C954008AF821 /* Minefield.swift */,
 				AED25C251EA410C20039F86C /* Laser.swift */,
-				AE16F8F31E6B0156002C8FE5 /* Mine.swift */,
+				AED25C271EA624A40039F86C /* Collisions.swift */,
 				AE2A10381E6B10F800795807 /* Physics_bitmasks.swift */,
-				AECD43EA1E63236C00DE3BB8 /* AppDelegate.swift */,
-				AED916BC1E81537E00B4DD98 /* AsteroidFIeld.swift */,
-				AE369F0C1E815CD6004A9B98 /* Asteroid.swift */,
-				AECD43EE1E63236C00DE3BB8 /* Actions.sks */,
 				AECD43F01E63236C00DE3BB8 /* GameScene.swift */,
 				AECD43F21E63236C00DE3BB8 /* GameViewController.swift */,
+				AE99C9A51E9A9F8C00E72B7A /* Joystick.swift */,
+				AE25D6301E6351C5005E9D0E /* Chunk.swift */,
+				AE14D6731E64980A00927E50 /* Planet.swift */,
+				AE8D75221E69C954008AF821 /* Minefield.swift */,
+				AE16F8F31E6B0156002C8FE5 /* Mine.swift */,
+				AED916BC1E81537E00B4DD98 /* AsteroidFIeld.swift */,
+				AE369F0C1E815CD6004A9B98 /* Asteroid.swift */,
+				AECD43EA1E63236C00DE3BB8 /* AppDelegate.swift */,
+				AECD43EE1E63236C00DE3BB8 /* Actions.sks */,
 				AECD43F41E63236C00DE3BB8 /* Main.storyboard */,
 				AED25C241EA404860039F86C /* Particle effects */,
 				AECD43F71E63236D00DE3BB8 /* Assets.xcassets */,
@@ -329,6 +332,7 @@
 				AE8D75231E69C954008AF821 /* Minefield.swift in Sources */,
 				AE2A10391E6B10F800795807 /* Physics_bitmasks.swift in Sources */,
 				AED916BD1E81537E00B4DD98 /* AsteroidFIeld.swift in Sources */,
+				AED25C281EA624A40039F86C /* Collisions.swift in Sources */,
 				AED25C261EA410C20039F86C /* Laser.swift in Sources */,
 				AE14D6741E64980A00927E50 /* Planet.swift in Sources */,
 				AECD441F1E6335E400DE3BB8 /* Spaceship.swift in Sources */,

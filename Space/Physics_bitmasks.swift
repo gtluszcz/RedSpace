@@ -16,6 +16,8 @@ struct PhysicsCategory{
     static let Planet: UInt32 = 0b1000
     static let Asteroid: UInt32 = 0b10000
     static let Laser: UInt32 = 0b100000
+    static let Explosion: UInt32 = 0b1000000
+    static let PartitionPush: UInt32 = 0b10000000
 
     
 }

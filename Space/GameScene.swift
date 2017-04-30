@@ -15,6 +15,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var Starfield:SKEmitterNode!
     var Player: Spaceship!
     let cameraNode = SKCameraNode()
+    var collisions: Collisions!
     var globalseed = GKARC4RandomSource()
     var joystickone = Joystick()
     var joysticktwo = Joystick()
@@ -73,6 +74,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         Starfield.constraints = [followPlayer]
         self.addChild(Starfield)
         
+        //set collisions logic
+        collisions = Collisions(game: self)
         
         //set physics world
         self.physicsWorld.contactDelegate = self
@@ -102,20 +105,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches{
             if joystickone.inParentHierarchy(self) == false{
-                print("joystick 1 enabled")
+                print("                                        joystick 1 enabled")
                 joystickone = Joystick(scene: self, radius: 40, position: touch.location(in: self.camera!))
                 fingerone.insert(touch, at: 0)
                 self.cameraNode.addChild(joystickone)
             }
             else if joystickone.inParentHierarchy(self) == true && joysticktwo.inParentHierarchy(self) == false{
-                print("joystick 2 enabled")
+                print("                                        joystick 2 enabled")
                 joysticktwo = Joystick(scene: self, radius: 40, position: touch.location(in: self.camera!))
             
                 fingertwo.insert(touch, at: 0)
                 self.cameraNode.addChild(joysticktwo)
             }
         }
-        print("touch")
+//        print("touch")
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches{
@@ -140,7 +143,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                     joystickone.removeAllChildren()
                     joystickone.removeFromParent()
                     fingerone.remove(at: 0)
-                    print("joystick 1 disabled")
+                    print("                                        joystick 1 disabled")
                 }
             }
             if !fingertwo.isEmpty{
@@ -148,7 +151,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                     joysticktwo.removeAllChildren()
                     joysticktwo.removeFromParent()
                     fingertwo.remove(at: 0)
-                    print("joystick 2 disabled")
+                    print("                                        joystick 2 disabled")
                 }
             }
         }
@@ -160,7 +163,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                     joystickone.removeAllChildren()
                     joystickone.removeFromParent()
                     fingerone.remove(at: 0)
-                    print("joystick 1 disabled")
+                    print("                                        joystick 1 disabled")
                 }
             }
             if !fingertwo.isEmpty{
@@ -168,7 +171,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                     joysticktwo.removeAllChildren()
                     joysticktwo.removeFromParent()
                     fingertwo.remove(at: 0)
-                    print("joystick 2 disabled")
+                    print("                                        joystick 2 disabled")
                 }
             }
         }
@@ -179,93 +182,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func didBegin(_ contact: SKPhysicsContact) {
         let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
 
-        // Handle Spaceship collision with Bombfield
+        // Handle Spaceship collision with  Minefield
         if collision == PhysicsCategory.Minefield | PhysicsCategory.Player{
-            contactPlayerBombfield(contact: contact)
+            collisions.contactPlayerBombfield(contact: contact)
         }
         
-        // Handle Spaceship collision with Bombfield
+        // Handle Spaceship collision with Minefield
         else if collision == PhysicsCategory.Mine | PhysicsCategory.Player{
-            contactPlayerMine(contact: contact)
+            collisions.contactPlayerMine(contact: contact)
         }
         
         // Handle Laser collision with Asteroid
         else if collision == PhysicsCategory.Laser | PhysicsCategory.Asteroid{
-            contactLaserAsteroid(contact: contact)
+            collisions.contactLaserAsteroid(contact: contact)
+        }
+            
+        // Handle Laser collision with Planet
+        else if collision == PhysicsCategory.Laser | PhysicsCategory.Planet{
+            collisions.contactLaserPlanet(contact: contact)
+        }
+
+        // Handle Laser collision with Mine
+        else if collision == PhysicsCategory.Laser | PhysicsCategory.Mine{
+            collisions.contactLaserMine(contact: contact)
         }
 
 
     }
-    
-    //Contact: Spaceship - Minefield
-    func contactPlayerBombfield(contact: SKPhysicsContact){
-        if contact.bodyA.categoryBitMask == PhysicsCategory.Player && contact.bodyB.categoryBitMask == PhysicsCategory.Minefield{
-            let bombfield = contact.bodyB.node as! Minefield
-            print(" <*> minefield approached")
-            bombfield.activate()
-            let mine = bombfield.bomb!
-            mine.activated = true
-            
-        }
-        if contact.bodyA.categoryBitMask == PhysicsCategory.Minefield && contact.bodyB.categoryBitMask == PhysicsCategory.Player{
-            let bombfield = contact.bodyB.node as! Minefield
-            print(" <*> minefield approached")
-            bombfield.activate()
-            let mine = bombfield.bomb!
-            mine.activated = true
-            
-        }
-    }
-    
-    //Contact: Spaceship - Mine
-    func contactPlayerMine(contact: SKPhysicsContact){
-        if contact.bodyA.categoryBitMask == PhysicsCategory.Player && contact.bodyB.categoryBitMask == PhysicsCategory.Mine{
-            print(" <*> prepare for hit")
-            let mine = contact.bodyB.node as! Mine
-            mine.explode()
-        }
-        if contact.bodyA.categoryBitMask == PhysicsCategory.Mine && contact.bodyB.categoryBitMask == PhysicsCategory.Player{
-            print(" <*> prepare for hit")
-            let mine = contact.bodyA.node as! Mine
-            mine.explode()
-        }
-    }
-    
-    //Contact: Laser - Asteroid
-    func contactLaserAsteroid(contact: SKPhysicsContact){
-        if contact.bodyA.categoryBitMask == PhysicsCategory.Laser && contact.bodyB.categoryBitMask == PhysicsCategory.Asteroid{
-            print("<laser> hit asteroid")
-            let asteroid = contact.bodyB.node as! Asteroid
-            let laser = contact.bodyA.node as! Laser
-            laser.destroyed = true
-            let puff = SKEmitterNode(fileNamed: "Explode1")
-            puff?.position = contact.contactPoint
-            puff?.zPosition=2
-            self.addChild(puff!)
-            let disappear = SKAction.removeFromParent()
-            let delay = SKAction.wait(forDuration: TimeInterval(1))
-            let doStuff = SKAction.sequence([delay,disappear])
-            puff?.run(doStuff)
-
-            
-            
-        }
-        if contact.bodyA.categoryBitMask == PhysicsCategory.Asteroid && contact.bodyB.categoryBitMask == PhysicsCategory.Laser{
-            print("<laser> hit asteroid")
-            let asteroid = contact.bodyA.node as! Asteroid
-            let laser = contact.bodyB.node as! Laser
-            laser.destroyed = true
-            let puff = SKEmitterNode(fileNamed: "Explode1")
-            puff?.position = contact.contactPoint
-            puff?.zPosition=2
-            self.addChild(puff!)
-            let disappear = SKAction.removeFromParent()
-            let delay = SKAction.wait(forDuration: TimeInterval(1))
-            let doStuff = SKAction.sequence([delay,disappear])
-            puff?.run(doStuff)
-        }
-    }
-
 
     
     //MARK: - UPDATE
@@ -275,8 +218,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         handlejoysticks()
         allnodesupdate()
         updateChunks()
-        print(lasers.count)
-
+    
     }
     
     func handlejoysticks(){
@@ -321,10 +263,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 gridy += -2
             }
             if lastposx != gridx || lastposy != gridy {
-                deletechunk(target: chunk)
+                emptychunk(target: chunk)
                 chunk.moveTo(gridx: gridx, gridy: gridy)
                 chunk.addobjects(seed: globalseed.seed)
-                print(asteroids.count)
             }
             
             
@@ -344,9 +285,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
     }
     
-    func deletechunk(target: SKNode){
+    func emptychunk(target: SKNode){
         for child in target.children{
-            deletechunk(target: child)
+            emptychunk(target: child)
             child.removeFromParent()
         }
         switch target {

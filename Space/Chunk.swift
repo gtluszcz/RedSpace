@@ -139,7 +139,7 @@ class Chunk: SKSpriteNode{
             //Spawn mine and bombfield
             let bomb = Minefield(scene: self.game, position: objcenter, maxradius: objradius, unit: self.dim)
             self.addChild(bomb)
-            let mine = Mine(scene: self.game)
+            let mine = Mine(scene: self.game, minefield: bomb)
             bomb.bomb = mine
             mine.position = objcenter
             self.addChild(mine)

@@ -13,14 +13,20 @@ class Spaceship: SKSpriteNode{
     //MARK: PROPERTIES
     var game: GameScene!
     var dim: CGFloat!
+    
+    //Movement management
     var aimRotation: CGFloat = 0
     var moveRotation: CGFloat = 0
     var thrusters: CGFloat = 20
     var swiftiness: CGFloat = 1.5
-    var laserlvl: CGFloat = 1
+    
+    //Shooting management
+    var laserlvl = 1
     var lasttimeshoot = NSDate()
     var shootingrarity = 0.15
     var lastshootingcannon = 1
+    var laserspeed: CGFloat = 800
+    var laserdamage: CGFloat = 5
     
     // MARK: - INIT
     
@@ -46,6 +52,7 @@ class Spaceship: SKSpriteNode{
         physicsBody!.categoryBitMask = PhysicsCategory.Player
         physicsBody!.collisionBitMask = PhysicsCategory.Planet | PhysicsCategory.Asteroid
         physicsBody!.contactTestBitMask = PhysicsCategory.Minefield | PhysicsCategory.Mine
+        self.physicsBody?.fieldBitMask = PhysicsCategory.Explosion
         self.physicsBody?.linearDamping = self.swiftiness
         
         
@@ -129,7 +136,7 @@ class Spaceship: SKSpriteNode{
             lasttimeshoot = NSDate()
             switch self.laserlvl {
             case 1:
-                let laser = Laser(scene: self.game, laserlvl: Int(self.laserlvl), aimdirection: self.aimRotation)
+                let laser = Laser(scene: self.game, laserlvl: self.laserlvl, damage: self.laserdamage ,speed: self.laserspeed, aimdirection: self.aimRotation)
                 self.game.addChild(laser)
                 let kat = atan2(11.0, 20)
                 if lastshootingcannon == 1{
