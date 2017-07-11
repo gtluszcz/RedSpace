@@ -96,9 +96,11 @@ class Asteroid: SKSpriteNode{
             let oldvelocity = self.physicsBody?.velocity
             let oldangularvelocity = self.physicsBody?.angularVelocity
             let oldchunk = self.parent as! Chunk
-            if self.position.x >= oldchunk.size.width / 2{
+            if self.position.x > oldchunk.size.width / 2{
+                var changed = false
                 for chunk in self.game.chunks{
                     if chunk.intersects(self) && chunk.position.y == oldchunk.position.y && chunk != oldchunk && chunk.position.x > oldchunk.position.x{
+                        changed = true
                         self.removeFromParent()
                         chunk.addChild(self)
                         self.physicsBody?.velocity = oldvelocity!
@@ -108,11 +110,17 @@ class Asteroid: SKSpriteNode{
                         
                     }
                 }
+                if !changed{
+                    disappear()
+                    print("yeah")
+                }
                 
             }
-            else if self.position.x <= oldchunk.size.width / -2{
+            else if self.position.x < oldchunk.size.width / -2{
+                var changed = false
                 for chunk in self.game.chunks{
                     if  chunk.intersects(self) && chunk.position.y == oldchunk.position.y && chunk != oldchunk && chunk.position.x < oldchunk.position.x{
+                        changed = true
                         self.removeFromParent()
                         chunk.addChild(self)
                         self.physicsBody?.velocity = oldvelocity!
@@ -120,11 +128,17 @@ class Asteroid: SKSpriteNode{
                         self.position.x = (oldchunk.size.width / 2) + self.position.x - oldchunk.size.width / -2
                     }
                 }
+                if !changed{
+                    disappear()
+                    print("yeah")
+                }
                 
             }
-            if self.position.y >= oldchunk.size.height / 2{
+            else if self.position.y > oldchunk.size.height / 2{
+                var changed = false
                 for chunk in self.game.chunks{
                     if chunk.intersects(self) && chunk.position.x == oldchunk.position.x && chunk != oldchunk && chunk.position.y > oldchunk.position.y{
+                        changed = true
                         self.removeFromParent()
                         chunk.addChild(self)
                         self.physicsBody?.velocity = oldvelocity!
@@ -133,10 +147,16 @@ class Asteroid: SKSpriteNode{
                         
                     }
                 }
+                if !changed{
+                    disappear()
+                    print("yeah")
+                }
             }
-            else if self.position.y <= oldchunk.size.height / -2{
+            else if self.position.y < oldchunk.size.height / -2{
+                var changed = false
                 for chunk in self.game.chunks{
                     if chunk.intersects(self) && chunk.position.x == oldchunk.position.x && chunk != oldchunk && chunk.position.y < oldchunk.position.y{
+                        changed = true
                         self.removeFromParent()
                         chunk.addChild(self)
                         self.physicsBody?.velocity = oldvelocity!
@@ -146,24 +166,16 @@ class Asteroid: SKSpriteNode{
 
                     }
                 }
+                if !changed{
+                    disappear()
+                    print("yeah")
+                }
             }
         }
     }
     
     func makepuffwithpush(point: CGPoint, size: CGSize){
-//        let puff = SKEmitterNode(fileNamed: "Explode1")
-//        puff?.position.x = point.x + (self.parent?.position.x)!
-//        puff?.position.y = point.y + (self.parent?.position.y)!
-//
-//        puff?.zPosition = 2
-//        puff?.particleSize = CGSize(width: 5 * Int(CGFloat(1) / CGFloat(2) * max(self.size.height,self.size.width)), height: 5 * Int(CGFloat(1) / CGFloat(2) * max(self.size.height,self.size.width)))
-//        puff?.particleLifetime = 0.4
-//        self.game.addChild(puff!)
-//        let disappear = SKAction.removeFromParent()
-//        let delay = SKAction.wait(forDuration: TimeInterval(0.6))
-//        let doStuff = SKAction.sequence([delay,disappear])
-//        puff?.run(doStuff)
-        
+
         let push = SKFieldNode.radialGravityField()
         push.position.x = point.x + (self.parent?.position.x)!
         push.position.y = point.y + (self.parent?.position.y)!

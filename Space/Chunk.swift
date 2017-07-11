@@ -16,7 +16,8 @@ class Chunk: SKSpriteNode{
     var gridPos = CGPoint(x: 0, y: 0)
     var textbox = SKLabelNode()
     var dim : CGFloat = 0
-    
+    var lasttimemeteor = NSDate()
+    var meteorrarity = 1.0
     
     //MARK: - INIT
     
@@ -166,7 +167,93 @@ class Chunk: SKSpriteNode{
         return endseed
     }
     
+    func spawnflyingasteroid(){
+        // find chunk position
+        var chunkisup = true
+        for chunk in self.game.chunks{
+            if chunk.position.y > self.position.y{
+                chunkisup = false
+            }
+        }
+        var chunkisleft = true
+        for chunk in self.game.chunks{
+            if chunk.position.x < self.position.x{
+                chunkisleft = false
+            }
+        }
+        //make random
+        let rs = GKARC4RandomSource()
+        var newposition = CGPoint(x: self.position.x, y: self.position.y)
+        if chunkisup{newposition.y = newposition.y + self.size.height / 2}
+        else if !chunkisup{newposition.y = newposition.y - self.size.height / 2}
+        
+        if chunkisleft{newposition.x = newposition.x - self.size.width / 2}
+        else if !chunkisleft{newposition.x = newposition.x + self.size.width / 2}
+        
+        
+        let rdwidth = GKRandomDistribution(randomSource: rs, lowestValue: 0, highestValue: Int(self.size.width))
+        let rdheight = GKRandomDistribution(randomSource: rs, lowestValue: 0, highestValue: Int(self.size.height))
+        let tmpbool = rdwidth.nextBool()
+        var rdangle = GKRandomDistribution(randomSource: rs, lowestValue: 0, highestValue: 360)
+        //define starting position depending of relative chunks positions
+        if chunkisup && chunkisleft{
+            if tmpbool{
+                newposition.y += CGFloat(rdheight.nextInt() * -1)
+            }
+            else if tmpbool{
+                newposition.x += CGFloat(rdwidth.nextInt())
+            }
+            //rdangle = GKRandomDistribution(randomSource: rs, lowestValue: 270, highestValue: 360)
+        }
+        else if chunkisup && !chunkisleft{
+            if tmpbool{
+                newposition.y += CGFloat(rdheight.nextInt() * -1)
+            }
+            else if tmpbool{
+                newposition.x += CGFloat(rdwidth.nextInt() * -1)
+            }
+            //rdangle = GKRandomDistribution(randomSource: rs, lowestValue: 180, highestValue: 270)
+        }
+        else if !chunkisup && chunkisleft{
+            if tmpbool{
+                newposition.y += CGFloat(rdheight.nextInt())
+            }
+            else if tmpbool{
+                newposition.x += CGFloat(rdwidth.nextInt())
+            }
+            //rdangle = GKRandomDistribution(randomSource: rs, lowestValue: 0, highestValue: 90)
+
+        }
+        else if !chunkisup && !chunkisleft{
+            if tmpbool{
+                newposition.y += CGFloat(rdheight.nextInt())
+            }
+            else if tmpbool{
+                newposition.x += CGFloat(rdwidth.nextInt() * -1)
+            }
+            //rdangle = GKRandomDistribution(randomSource: rs, lowestValue: 90, highestValue: 180)
+
+        }
+        let startangle = CGFloat(rdangle.nextInt())
+        let rdkind = GKRandomDistribution(randomSource: rs, lowestValue: 4, highestValue: 10)
+        let asteroid = Asteroid(scene: self.game, kind: rdkind.nextInt(), position: newposition)
+        self.addChild(asteroid)
+        let vector = CGVector(dx: cos(startangle) * 10, dy: sin(startangle) * 10)
+        let action = SKAction.applyImpulse(vector, duration: 0.1)
+        asteroid.run(action)
+
+    
+        
+        
+        
+        
+    }
+    
     func update(){
+        if lasttimemeteor.timeIntervalSinceNow < -meteorrarity{
+            lasttimemeteor = NSDate()
+            spawnflyingasteroid()
+        }
         
     }
 
