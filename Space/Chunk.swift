@@ -183,7 +183,7 @@ class Chunk: SKSpriteNode{
         }
         //make random
         let rs = GKARC4RandomSource()
-        var newposition = CGPoint(x: self.position.x, y: self.position.y)
+        var newposition = CGPoint(x: 0, y: 0)
         if chunkisup{newposition.y = newposition.y + self.size.height / 2}
         else if !chunkisup{newposition.y = newposition.y - self.size.height / 2}
         
@@ -198,21 +198,21 @@ class Chunk: SKSpriteNode{
         //define starting position depending of relative chunks positions
         if chunkisup && chunkisleft{
             if tmpbool{
-                newposition.y += CGFloat(rdheight.nextInt() * -1)
+                newposition.y -= CGFloat(rdheight.nextInt())
             }
             else if tmpbool{
                 newposition.x += CGFloat(rdwidth.nextInt())
             }
-            //rdangle = GKRandomDistribution(randomSource: rs, lowestValue: 270, highestValue: 360)
+            rdangle = GKRandomDistribution(randomSource: rs, lowestValue: 270, highestValue: 360)
         }
         else if chunkisup && !chunkisleft{
             if tmpbool{
-                newposition.y += CGFloat(rdheight.nextInt() * -1)
+                newposition.y -= CGFloat(rdheight.nextInt())
             }
             else if tmpbool{
-                newposition.x += CGFloat(rdwidth.nextInt() * -1)
+                newposition.x -= CGFloat(rdwidth.nextInt())
             }
-            //rdangle = GKRandomDistribution(randomSource: rs, lowestValue: 180, highestValue: 270)
+            rdangle = GKRandomDistribution(randomSource: rs, lowestValue: 180, highestValue: 270)
         }
         else if !chunkisup && chunkisleft{
             if tmpbool{
@@ -221,7 +221,7 @@ class Chunk: SKSpriteNode{
             else if tmpbool{
                 newposition.x += CGFloat(rdwidth.nextInt())
             }
-            //rdangle = GKRandomDistribution(randomSource: rs, lowestValue: 0, highestValue: 90)
+            rdangle = GKRandomDistribution(randomSource: rs, lowestValue: 0, highestValue: 90)
 
         }
         else if !chunkisup && !chunkisleft{
@@ -229,16 +229,18 @@ class Chunk: SKSpriteNode{
                 newposition.y += CGFloat(rdheight.nextInt())
             }
             else if tmpbool{
-                newposition.x += CGFloat(rdwidth.nextInt() * -1)
+                newposition.x -= CGFloat(rdwidth.nextInt())
             }
-            //rdangle = GKRandomDistribution(randomSource: rs, lowestValue: 90, highestValue: 180)
+            rdangle = GKRandomDistribution(randomSource: rs, lowestValue: 90, highestValue: 180)
 
         }
         let startangle = CGFloat(rdangle.nextInt())
-        let rdkind = GKRandomDistribution(randomSource: rs, lowestValue: 4, highestValue: 10)
+        let rdkind = GKRandomDistribution(randomSource: rs, lowestValue: 6, highestValue: 10)
+        let strenght = GKRandomDistribution(randomSource: rs, lowestValue: 3, highestValue: 8)
+        let actualstrength = CGFloat(strenght.nextInt())
         let asteroid = Asteroid(scene: self.game, kind: rdkind.nextInt(), position: newposition)
         self.addChild(asteroid)
-        let vector = CGVector(dx: cos(startangle) * 10, dy: sin(startangle) * 10)
+        let vector = CGVector(dx: cos(startangle) * actualstrength, dy: sin(startangle) * actualstrength)
         let action = SKAction.applyImpulse(vector, duration: 0.1)
         asteroid.run(action)
 

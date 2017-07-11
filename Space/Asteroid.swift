@@ -112,7 +112,6 @@ class Asteroid: SKSpriteNode{
                 }
                 if !changed{
                     disappear()
-                    print("yeah")
                 }
                 
             }
@@ -130,7 +129,6 @@ class Asteroid: SKSpriteNode{
                 }
                 if !changed{
                     disappear()
-                    print("yeah")
                 }
                 
             }
@@ -149,7 +147,6 @@ class Asteroid: SKSpriteNode{
                 }
                 if !changed{
                     disappear()
-                    print("yeah")
                 }
             }
             else if self.position.y < oldchunk.size.height / -2{
@@ -168,7 +165,6 @@ class Asteroid: SKSpriteNode{
                 }
                 if !changed{
                     disappear()
-                    print("yeah")
                 }
             }
         }
