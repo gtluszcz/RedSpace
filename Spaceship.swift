@@ -28,6 +28,13 @@ class Spaceship: SKSpriteNode{
     var laserspeed: CGFloat = 800
     var laserdamage: CGFloat = 5
     
+    //Durability management
+    var maxhealth: CGFloat = 300
+    var maxshieldhealth: CGFloat = 300
+    var health: CGFloat = 300
+    var shieldhealth: CGFloat = 300
+    var shield: SKSpriteNode!
+    
     // MARK: - INIT
     
     init(scene: GameScene, size: CGSize){
@@ -55,6 +62,11 @@ class Spaceship: SKSpriteNode{
         self.physicsBody?.fieldBitMask = PhysicsCategory.Explosion
         self.physicsBody?.linearDamping = self.swiftiness
         
+        //setup shield
+        let texture = SKTexture(imageNamed: "shield2")
+        let shieldsize = CGSize(width: 65, height: 65)
+        shield = SKSpriteNode(texture: texture, color: UIColor.clear, size: shieldsize)
+        self.addChild(shield)
         
 
     }
@@ -109,6 +121,7 @@ class Spaceship: SKSpriteNode{
         self.aimRotation = rad
         let rotate = SKAction.rotate(toAngle: rad - CGFloat(Double.pi / 2), duration: 0.1, shortestUnitArc:true)
         self.run(rotate)
+      
         }
         
         // Move joystick pads inside joysticks
@@ -153,6 +166,42 @@ class Spaceship: SKSpriteNode{
                 print("wrong Spaceship.laserlevel")
             }
         }
+    }
+    func manageshields(){
+        if shieldhealth >= 300 {
+            shield.texture = SKTexture(imageNamed: "shield3")
+            shield.size = CGSize(width: 65, height: 65)
+        }
+        else if shieldhealth >= 160{
+            shield.texture = SKTexture(imageNamed: "shield2")
+            shield.size = CGSize(width: 60, height: 50)
+            shield.position.y = 5
+        }
+        else if shieldhealth >= 80 {
+            shield.texture = SKTexture(imageNamed: "shield1")
+            shield.size = CGSize(width: 60, height: 50)
+            shield.position.y =  5
+
+        }
+        else if shieldhealth >= 0{
+            shield.isHidden = true
+        }
+    }
+    
+    func damage(damage: CGFloat){
+        if shieldhealth >= damage{
+            shieldhealth -= damage
+        }
+        else if shieldhealth < damage{
+            var dmg = damage
+            dmg -= shieldhealth
+            shieldhealth = 0
+            health -= dmg
+        }
+    }
+    
+    func update(){
+        manageshields()
     }
 }
 

@@ -268,6 +268,18 @@ class Asteroid: SKSpriteNode{
         }
     }
     
+    func damage(damage: CGFloat){
+        (currenthealth)!-=damage;
+        let textbox = SKLabelNode(text: String(Int(damage)))
+                textbox.fontSize = 20
+                textbox.zPosition = 99
+                textbox.fontColor = UIColor.white
+                textbox.horizontalAlignmentMode = .center
+                textbox.verticalAlignmentMode = .center
+                self.addChild(textbox)
+
+    }
+    
     func disappear(){
         self.game.asteroids.remove(at: self.game.asteroids.index(of: self)!)
         self.removeFromParent()

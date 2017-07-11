@@ -273,6 +273,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
     }
     func allnodesupdate(){
+        Player.update()
         for chunk in self.chunks{chunk.update()}
         for planet in self.planets{planet.update()}
         for minefield in self.minefields{minefield.update()}

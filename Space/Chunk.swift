@@ -252,7 +252,7 @@ class Chunk: SKSpriteNode{
     }
     
     func update(){
-        if lasttimemeteor.timeIntervalSinceNow < -meteorrarity{
+        if lasttimemeteor.timeIntervalSinceNow < -meteorrarity && self.game.asteroids.count < 120{
             lasttimemeteor = NSDate()
             spawnflyingasteroid()
         }

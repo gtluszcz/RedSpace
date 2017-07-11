@@ -126,7 +126,7 @@ class Collisions{
         laser.isHidden = true
         laser.physicsBody?.categoryBitMask = PhysicsCategory.None
         
-        asteroid.currenthealth = asteroid.currenthealth - laser.damage
+        asteroid.damage(damage: laser.damage)
         
         print(" <|> hit asteroid")
         //Make puff
@@ -181,6 +181,12 @@ class Collisions{
         puff?.run(doStuff)
     }
     
+    func distance(point1: CGPoint, point2: CGPoint) -> CGFloat {
+        let dx = point1.x - point2.x
+        let dy = point1.y - point2.y
+        return abs(sqrt(dx * dx + dy * dy));
+    }
+    
     func makeexplosion(point: CGPoint, size: CGSize){
         var texture = SKTexture(imageNamed: "explosion_f1")
         let explosion = SKSpriteNode(texture: texture, color: UIColor.clear, size: texture.size())
@@ -209,5 +215,24 @@ class Collisions{
             SKAction.removeFromParent()
             ]))
         self.game.addChild(shield)
+        
+        
+        /// hurt asteroids in explosion
+        for asteroid in self.game.asteroids {
+            let dist = distance(point1: point, point2: asteroid.position)
+            if dist < 300{
+                print(dist)
+                asteroid.damage(damage: 10000/dist)
+            }
+        }
+        
+        
+        /// hurt player in explosion
+        let dist = distance(point1: point, point2: self.game.Player.position)
+        if dist < 100{
+            self.game.Player.damage(damage: 3000/dist)
+           
+        }
+        
     }
 }
