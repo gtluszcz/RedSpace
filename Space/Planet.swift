@@ -39,7 +39,12 @@ class Planet: SKShapeNode{
     func setup(position: CGPoint, color: UIColor){
         self.position = position
         self.fillColor = SKColor.white
-        self.strokeColor = UIColor.clear
+        if self.game.debug{
+            self.strokeColor = UIColor.orange
+        }
+        else{
+            self.strokeColor = UIColor.clear
+        }
         self.zPosition = 0
         self.fillTexture = SKTexture(imageNamed: "planet1")
         self.physicsBody = SKPhysicsBody(circleOfRadius: self.frame.size.width / 2)
@@ -47,6 +52,7 @@ class Planet: SKShapeNode{
         physicsBody!.collisionBitMask = PhysicsCategory.Player
         self.physicsBody?.isDynamic = false
         
+        self.game.planets.append(self)
     
     }
     

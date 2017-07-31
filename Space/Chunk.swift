@@ -151,6 +151,25 @@ class Chunk: SKSpriteNode{
             self.addChild(asteroidfield)
             asteroidfield.spawnasteroids(random: random, maxradius: recsize / 2)
         }
+        else if tmp > 250 && tmp <= 300 {
+            //spawn enemy
+            var enemy: Enemy!
+            let randenemy = GKRandomDistribution(randomSource: random, lowestValue: 1, highestValue: 2)
+            switch randenemy.nextInt(){
+            case 1:
+                enemy = Enemy1(scene: self.game)
+                break
+            case 2:
+                enemy = Enemy2(scene: self.game)
+                break
+            default:
+                print("Error")
+            }
+            
+            self.addChild(enemy)
+            enemy.position = objcenter
+            
+        }
         
     }
     
@@ -252,7 +271,7 @@ class Chunk: SKSpriteNode{
     }
     
     func update(){
-        if lasttimemeteor.timeIntervalSinceNow < -meteorrarity && self.game.asteroids.count < 120{
+        if lasttimemeteor.timeIntervalSinceNow < -meteorrarity && self.game.asteroids.count < 100{
             lasttimemeteor = NSDate()
             spawnflyingasteroid()
         }

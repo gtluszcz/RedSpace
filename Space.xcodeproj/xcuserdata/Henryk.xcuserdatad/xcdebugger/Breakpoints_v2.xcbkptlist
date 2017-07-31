@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "514205773.959833"
+            timestampString = "523126079.056621"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "GameScene"
             landmarkType = "3">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "521480239.494568"
+            timestampString = "523209590.129027"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "262"
-            endingLineNumber = "262"
+            startingLineNumber = "275"
+            endingLineNumber = "275"
             landmarkName = "updateChunks()"
             landmarkType = "7">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "521480239.494568"
+            timestampString = "523209590.129027"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "260"
-            endingLineNumber = "260"
+            startingLineNumber = "273"
+            endingLineNumber = "273"
             landmarkName = "updateChunks()"
             landmarkType = "7">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "521480239.494568"
+            timestampString = "523209590.129027"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "261"
-            endingLineNumber = "261"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
             landmarkName = "updateChunks()"
             landmarkType = "7">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "521480239.494568"
+            timestampString = "523209590.129027"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "268"
-            endingLineNumber = "268"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
             landmarkName = "updateChunks()"
             landmarkType = "7">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "521480239.494568"
+            timestampString = "523209590.129027"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "271"
-            endingLineNumber = "271"
+            startingLineNumber = "284"
+            endingLineNumber = "284"
             landmarkName = "updateChunks()"
             landmarkType = "7">
          </BreakpointContent>
@@ -454,11 +454,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "521480239.494568"
+            timestampString = "523209590.129027"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "234"
-            endingLineNumber = "234"
+            startingLineNumber = "247"
+            endingLineNumber = "247"
             landmarkName = "handlejoysticks()"
             landmarkType = "7">
          </BreakpointContent>
@@ -486,11 +486,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "521482516.412347"
+            timestampString = "523209590.129027"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "345"
-            endingLineNumber = "345">
+            startingLineNumber = "364"
+            endingLineNumber = "364">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -546,11 +546,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/GameScene.swift"
-            timestampString = "521482516.412347"
+            timestampString = "523209590.129027"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "322"
-            endingLineNumber = "322"
+            startingLineNumber = "340"
+            endingLineNumber = "340"
             landmarkName = "emptychunk(target:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -610,11 +610,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Collisions.swift"
-            timestampString = "521487069.846058"
+            timestampString = "523209590.129027"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "Collisions"
             landmarkType = "3">
          </BreakpointContent>
@@ -658,12 +658,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Spaceship.swift"
-            timestampString = "521487069.846058"
+            timestampString = "521569211.600765"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "197"
-            endingLineNumber = "197"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
             landmarkName = "damage(damage:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Space/Enemy1.swift"
+            timestampString = "523209590.129027"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "shoot()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

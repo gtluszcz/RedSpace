@@ -31,8 +31,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var asteroids = [Asteroid]()
     var asteroidfields = [AsteroidField]()
     var lasers = [Laser]()
+    var enemies = [Enemy]()
 
-    
+    var debug = false
     //MARK: - INIT
     
     override init(size: CGSize) {
@@ -92,6 +93,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         for chunk in chunks{
             self.addChild(chunk)
         }
+        
+        
 
     }
     
@@ -206,6 +209,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         else if collision == PhysicsCategory.Laser | PhysicsCategory.Mine{
             collisions.contactLaserMine(contact: contact)
         }
+        
+        // Handle Laser collision with Player
+        else if collision == PhysicsCategory.Laser | PhysicsCategory.Player{
+            collisions.contactLaserPlayer(contact: contact)
+        }
+        // Handle Laser collision with Enemy
+        else if collision == PhysicsCategory.Laser | PhysicsCategory.Enemy{
+            collisions.contactLaserEnemy(contact: contact)
+        }
+
 
 
     }
@@ -218,7 +231,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         handlejoysticks()
         allnodesupdate()
         updateChunks()
-    
+      
     }
     
     func handlejoysticks(){
@@ -281,7 +294,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         for asteroidfield in self.asteroidfields{asteroidfield.update()}
         for asteroid in self.asteroids{asteroid.update()}
         for laser in self.lasers{laser.update()}
-
+        for enemy in self.enemies{enemy.update()}
         
         
     }
@@ -317,10 +330,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if (index != nil){
                 minefields.remove(at: index!)
             }
+        case let someEnemy as Enemy:
+            let index = enemies.index(of: someEnemy)
+            if (index != nil){
+                enemies.remove(at: index!)
+            }
         default: break
         }
         
     }
+    
     
 }
 

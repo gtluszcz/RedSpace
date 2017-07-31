@@ -48,11 +48,11 @@ class Asteroid: SKSpriteNode{
         self.kind = kind
         switch kind {
         case 1:
-            self.maxhealth = 288
+            self.maxhealth = 271
         case 3:
             self.maxhealth = 223
         case 4:
-            self.maxhealth = 271
+            self.maxhealth = 233
         case 5:
             self.maxhealth = 52
         case 6:
@@ -170,7 +170,7 @@ class Asteroid: SKSpriteNode{
         }
     }
     
-    func makepuffwithpush(point: CGPoint, size: CGSize){
+    func makepush(point: CGPoint, size: CGSize){
 
         let push = SKFieldNode.radialGravityField()
         push.position.x = point.x + (self.parent?.position.x)!
@@ -185,6 +185,18 @@ class Asteroid: SKSpriteNode{
             SKAction.removeFromParent()
             ]))
         self.game.addChild(push)
+    }
+    
+    func makepuff(){
+        let puff = SKEmitterNode(fileNamed: "Explode1")
+        let pos = CGPoint(x: self.position.x + (self.parent?.position.x)!, y: self.position.y + (self.parent?.position.y)!)
+        puff?.position = pos
+        puff?.zPosition = 2
+        self.game.addChild(puff!)
+        let disappear = SKAction.removeFromParent()
+        let delay = SKAction.wait(forDuration: TimeInterval(1))
+        let doStuff = SKAction.sequence([delay,disappear])
+        puff?.run(doStuff)
     }
     
     func addasteroidsofkind(table: [Int]){
@@ -205,61 +217,73 @@ class Asteroid: SKSpriteNode{
             case 1:
                 
                 let asteroidsToCreate = [10, 6, 5, 7, 5, 8, 9, 7]
-                makepuffwithpush(point: self.position, size: self.size)
+                makepush(point: self.position, size: self.size)
                 addasteroidsofkind(table: asteroidsToCreate)
+                makepuff()
                 disappear()
                 break
             case 3:
     
                 let asteroidsToCreate = [10, 6, 5, 9, 9, 7]
-                makepuffwithpush(point: self.position, size: self.size)
+                makepush(point: self.position, size: self.size)
                 addasteroidsofkind(table: asteroidsToCreate)
+                makepuff()
                 disappear()
                 break
 
             case 4:
                 
                 let asteroidsToCreate = [10, 5, 5, 5, 10, 10]
-                makepuffwithpush(point: self.position, size: self.size)
+                makepush(point: self.position, size: self.size)
                 addasteroidsofkind(table: asteroidsToCreate)
+                makepuff()
                 disappear()
                 break
                 
             case 5:
                 
                 let asteroidsToCreate = [10, 9, 7]
-                makepuffwithpush(point: self.position, size: self.size)
+                makepush(point: self.position, size: self.size)
                 addasteroidsofkind(table: asteroidsToCreate)
+                makepuff()
                 disappear()
                 break
                 
             case 6:
                 
                 let asteroidsToCreate = [9, 7]
-                makepuffwithpush(point: self.position, size: self.size)
+                makepush(point: self.position, size: self.size)
                 addasteroidsofkind(table: asteroidsToCreate)
+                makepuff()
                 disappear()
                 break
                 
             case 7:
                 let asteroidsToCreate = [9]
-                makepuffwithpush(point: self.position, size: self.size)
+                makepush(point: self.position, size: self.size)
                 addasteroidsofkind(table: asteroidsToCreate)
+                makepuff()
                 disappear()
                 break
 
             case 8:
                 let asteroidsToCreate = [10]
-                makepuffwithpush(point: self.position, size: self.size)
+                makepush(point: self.position, size: self.size)
                 addasteroidsofkind(table: asteroidsToCreate)
+                makepuff()
                 disappear()
                 break
 
             case 9:
+                makepuff()
                 disappear()
+              
+                
                 break
             case 10:
+                makepuff()
                 disappear()
+            
                 break
             default:
                 print("<Error> Unable to partition meteor of kind \(self.kind)")
@@ -270,15 +294,34 @@ class Asteroid: SKSpriteNode{
     
     func damage(damage: CGFloat){
         (currenthealth)!-=damage;
-        let textbox = SKLabelNode(text: String(Int(damage)))
-                textbox.fontSize = 20
-                textbox.zPosition = 99
-                textbox.fontColor = UIColor.white
-                textbox.horizontalAlignmentMode = .center
-                textbox.verticalAlignmentMode = .center
-                self.addChild(textbox)
+        if self.game.debug{
+            indicatedamage(damage: damage)
+        }
+        
+
 
     }
+    
+    func indicatedamage(damage: CGFloat){
+        let textbox = SKLabelNode(fontNamed: "Avenir-Black")
+        textbox.text = String(Int(damage))
+        textbox.fontSize = 16
+        textbox.zPosition = 99
+        textbox.fontColor = UIColor.white
+        textbox.horizontalAlignmentMode = .center
+        textbox.verticalAlignmentMode = .center
+        self.game.addChild(textbox)
+        let chunk = self.parent as! Chunk
+        textbox.position.x = self.position.x + chunk.gridPos.x*chunk.size.width
+        textbox.position.y = self.position.y + chunk.gridPos.y*chunk.size.height
+        let disappear = SKAction.removeFromParent()
+        let moveup = SKAction.moveTo(y: self.position.y + chunk.gridPos.y*chunk.size.height + CGFloat(100), duration: TimeInterval(2))
+        let fadeout = SKAction.fadeOut(withDuration: TimeInterval(2))
+        let group = SKAction.group([moveup,fadeout])
+        let doStuff = SKAction.sequence([group,disappear])
+        textbox.run(doStuff)
+    }
+
     
     func disappear(){
         self.game.asteroids.remove(at: self.game.asteroids.index(of: self)!)

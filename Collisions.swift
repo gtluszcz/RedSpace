@@ -90,6 +90,32 @@ class Collisions{
         }
     }
     
+    //Contact: Laser - Player
+    func contactLaserPlayer(contact: SKPhysicsContact){
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Laser && contact.bodyB.categoryBitMask == PhysicsCategory.Player{
+            let player = contact.bodyB.node as! Spaceship
+            let laser = contact.bodyA.node as! Laser
+            laserplayer(laser: laser, player: player, contact: contact)
+        }
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Player && contact.bodyB.categoryBitMask == PhysicsCategory.Laser{
+            let player = contact.bodyA.node as! Spaceship
+            let laser = contact.bodyB.node as! Laser
+            laserplayer(laser: laser, player: player, contact: contact)
+        }
+    }
+    
+    //Contact: Laser - Enemy
+    func contactLaserEnemy(contact: SKPhysicsContact){
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Laser && contact.bodyB.categoryBitMask == PhysicsCategory.Enemy{
+            let enemy = contact.bodyB.node as! Enemy
+            let laser = contact.bodyA.node as! Laser
+            laserenemy(laser: laser, enemy: enemy, contact: contact)        }
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Enemy && contact.bodyB.categoryBitMask == PhysicsCategory.Laser{
+            let enemy = contact.bodyA.node as! Enemy
+            let laser = contact.bodyB.node as! Laser
+            laserenemy(laser: laser, enemy: enemy, contact: contact)
+        }
+    }
     
     
     
@@ -116,7 +142,7 @@ class Collisions{
         mine.isHidden = true
         
         //Make explosion
-        makeexplosion(point: contact.contactPoint, size: CGSize(width: 140, height: 140))
+        makeexplosion(point: contact.contactPoint, size: CGSize(width: 140, height: 140), percentage: 1)
     }
     
     
@@ -160,12 +186,30 @@ class Collisions{
         
         //Make explosion
         let point = CGPoint(x: mine.position.x + (mine.parent?.position.x)! , y: mine.position.y + (mine.parent?.position.y)!)
-        makeexplosion(point: point, size: CGSize(width: 140, height: 140))
+        makeexplosion(point: point, size: CGSize(width: 140, height: 140), percentage: 1)
         
     }
     
+    //MARK: - Contact: Laser - Player
+    func laserplayer(laser: Laser, player: Spaceship, contact: SKPhysicsContact){
+        laser.destroyed = true
+        laser.isHidden = true
+        laser.physicsBody?.categoryBitMask = PhysicsCategory.None
+        player.damage(damage: laser.damage)
+        makespark(point: contact.contactPoint)
+      
+    }
     
-    
+    //MARK: - Contact: Laser - Enemy
+    func laserenemy(laser: Laser, enemy: Enemy, contact: SKPhysicsContact){
+        laser.destroyed = true
+        laser.isHidden = true
+        laser.physicsBody?.categoryBitMask = PhysicsCategory.None
+        enemy.damage(damage: laser.damage)
+        makespark(point: contact.contactPoint)
+        
+        
+    }
     
     
     
@@ -181,13 +225,25 @@ class Collisions{
         puff?.run(doStuff)
     }
     
+    func makespark(point: CGPoint){
+        let puff = SKEmitterNode(fileNamed: "Spark")
+        puff?.position = point
+        puff?.zPosition = 2
+        puff?.setScale(0.25)
+        self.game.addChild(puff!)
+        let disappear = SKAction.removeFromParent()
+        let delay = SKAction.wait(forDuration: TimeInterval(1))
+        let doStuff = SKAction.sequence([delay,disappear])
+        puff?.run(doStuff)
+    }
+    
     func distance(point1: CGPoint, point2: CGPoint) -> CGFloat {
         let dx = point1.x - point2.x
         let dy = point1.y - point2.y
         return abs(sqrt(dx * dx + dy * dy));
     }
     
-    func makeexplosion(point: CGPoint, size: CGSize){
+    func makeexplosion(point: CGPoint, size: CGSize, percentage: CGFloat){
         var texture = SKTexture(imageNamed: "explosion_f1")
         let explosion = SKSpriteNode(texture: texture, color: UIColor.clear, size: texture.size())
         self.game.addChild(explosion)
@@ -219,10 +275,19 @@ class Collisions{
         
         /// hurt asteroids in explosion
         for asteroid in self.game.asteroids {
-            let dist = distance(point1: point, point2: asteroid.position)
-            if dist < 300{
-                print(dist)
-                asteroid.damage(damage: 10000/dist)
+            let pos = CGPoint(x: asteroid.position.x + (asteroid.parent?.position.x)!, y: asteroid.position.y + (asteroid.parent?.position.y)!)
+            let dist = distance(point1: point, point2: pos)
+            if dist < 100{
+                asteroid.damage(damage: percentage * 10000 / dist)
+            }
+        }
+        
+        /// hurt enemies in explosion
+        for enemy in self.game.enemies {
+            let pos = CGPoint(x: enemy.position.x + (enemy.parent?.position.x)!, y: enemy.position.y + (enemy.parent?.position.y)!)
+            let dist = distance(point1: point, point2: pos)
+            if dist < 100{
+                enemy.damage(damage: percentage * 7000 / dist)
             }
         }
         
@@ -230,7 +295,7 @@ class Collisions{
         /// hurt player in explosion
         let dist = distance(point1: point, point2: self.game.Player.position)
         if dist < 100{
-            self.game.Player.damage(damage: 3000/dist)
+            self.game.Player.damage(damage: percentage * 7000 / dist)
            
         }
         

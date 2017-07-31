@@ -11,6 +11,7 @@ import Foundation
 struct PhysicsCategory{
     static let None: UInt32 = 0
     static let Player: UInt32 = 0b1
+    static let Enemy: UInt32 = 0b100000000
     static let Minefield: UInt32 = 0b10
     static let Mine: UInt32 = 0b100
     static let Planet: UInt32 = 0b1000

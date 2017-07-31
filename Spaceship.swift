@@ -29,11 +29,12 @@ class Spaceship: SKSpriteNode{
     var laserdamage: CGFloat = 5
     
     //Durability management
-    var maxhealth: CGFloat = 300
-    var maxshieldhealth: CGFloat = 300
-    var health: CGFloat = 300
-    var shieldhealth: CGFloat = 300
+    var maxhealth: CGFloat = 500
+    var maxshieldhealth: CGFloat = 500
+    var health: CGFloat = 500
+    var shieldhealth: CGFloat = 500
     var shield: SKSpriteNode!
+    var regenerationrate: CGFloat = 0.2
     
     // MARK: - INIT
     
@@ -168,19 +169,31 @@ class Spaceship: SKSpriteNode{
         }
     }
     func manageshields(){
-        if shieldhealth >= 300 {
+        
+        shieldhealth+=regenerationrate
+        if shieldhealth > maxshieldhealth{
+            shieldhealth = maxshieldhealth
+        }
+        
+        if shieldhealth >= 500 {
             shield.texture = SKTexture(imageNamed: "shield3")
             shield.size = CGSize(width: 65, height: 65)
+            shield.position.y = 0
+            shield.isHidden = false
+
         }
-        else if shieldhealth >= 160{
+        else if shieldhealth >= 250{
             shield.texture = SKTexture(imageNamed: "shield2")
             shield.size = CGSize(width: 60, height: 50)
             shield.position.y = 5
+            shield.isHidden = false
+
         }
-        else if shieldhealth >= 80 {
+        else if shieldhealth >= 50 {
             shield.texture = SKTexture(imageNamed: "shield1")
             shield.size = CGSize(width: 60, height: 50)
             shield.position.y =  5
+            shield.isHidden = false
 
         }
         else if shieldhealth >= 0{
@@ -198,6 +211,29 @@ class Spaceship: SKSpriteNode{
             shieldhealth = 0
             health -= dmg
         }
+        
+        
+        indicatedamage(damage: damage)
+
+
+    }
+    
+    func indicatedamage(damage: CGFloat){
+        let textbox = SKLabelNode(fontNamed: "Avenir-Black")
+        textbox.text = String(Int(damage))
+        textbox.fontSize = 20
+        textbox.zPosition = 99
+        textbox.fontColor = UIColor.red
+        textbox.horizontalAlignmentMode = .center
+        textbox.verticalAlignmentMode = .center
+        self.game.addChild(textbox)
+        textbox.position = self.position
+        let disappear = SKAction.removeFromParent()
+        let moveup = SKAction.moveTo(y: self.position.y + CGFloat(100), duration: TimeInterval(2))
+        let fadeout = SKAction.fadeOut(withDuration: TimeInterval(2))
+        let group = SKAction.group([moveup,fadeout])
+        let doStuff = SKAction.sequence([group,disappear])
+        textbox.run(doStuff)
     }
     
     func update(){

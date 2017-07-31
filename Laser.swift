@@ -47,7 +47,7 @@ class Laser: SKSpriteNode{
         //set physics
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.categoryBitMask = PhysicsCategory.Laser
-        self.physicsBody?.contactTestBitMask = PhysicsCategory.Asteroid | PhysicsCategory.Planet | PhysicsCategory.Mine
+        self.physicsBody?.contactTestBitMask = PhysicsCategory.Asteroid | PhysicsCategory.Planet | PhysicsCategory.Mine | PhysicsCategory.Enemy | PhysicsCategory.Player
         self.physicsBody?.collisionBitMask = PhysicsCategory.None
         self.physicsBody?.velocity = CGVector(dx: self.laserspeed * cos(aimdirection), dy: self.laserspeed * sin(aimdirection))
         
@@ -70,8 +70,20 @@ class Laser: SKSpriteNode{
         self.removeFromParent()
     }
     
+    func managelevels(){
+        switch self.laserlvl {
+        case 1:
+             self.physicsBody?.contactTestBitMask = PhysicsCategory.Asteroid | PhysicsCategory.Planet | PhysicsCategory.Mine | PhysicsCategory.Enemy
+        case 2:
+             self.physicsBody?.contactTestBitMask = PhysicsCategory.Asteroid | PhysicsCategory.Planet | PhysicsCategory.Mine | PhysicsCategory.Player | PhysicsCategory.Enemy
+        default:
+            print("Error wrong laserlvl")
+        }
+    }
+    
     //MARK: - UPDATE
     func update(){
+        managelevels()
         if !destroyed{disappear()}
         if destroyed{destroy()}
     }
