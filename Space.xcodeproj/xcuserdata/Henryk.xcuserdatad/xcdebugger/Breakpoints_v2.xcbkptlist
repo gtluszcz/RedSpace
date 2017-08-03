@@ -610,11 +610,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Collisions.swift"
-            timestampString = "523209590.129027"
+            timestampString = "523478726.678354"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
+            startingLineNumber = "211"
+            endingLineNumber = "211"
             landmarkName = "Collisions"
             landmarkType = "3">
          </BreakpointContent>
@@ -674,11 +674,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space/Enemy1.swift"
-            timestampString = "523209590.129027"
+            timestampString = "523476815.952034"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "227"
-            endingLineNumber = "227"
+            startingLineNumber = "284"
+            endingLineNumber = "284"
             landmarkName = "shoot()"
             landmarkType = "7">
          </BreakpointContent>

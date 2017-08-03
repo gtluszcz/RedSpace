@@ -131,6 +131,14 @@ class Collisions{
         minefield.activate1()
         let mine = minefield.bomb!
         mine.activated = true
+        
+        let chunk = minefield.parent as! Chunk
+        let dx = (mine.position.x + chunk.gridPos.x*chunk.size.width) - spaceship.position.x
+        let dy = (mine.position.y + chunk.gridPos.y*chunk.size.height) - spaceship.position.y
+        let rad = atan2(dy, dx)
+        let rotate = SKAction.rotate(toAngle: rad + CGFloat(Double.pi * 1.5), duration: 0, shortestUnitArc: true)
+        mine.run(rotate)
+
     }
     
     

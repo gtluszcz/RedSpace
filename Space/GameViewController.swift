@@ -11,13 +11,14 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
+    var scene: GameScene!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.becomeFirstResponder()
        
         
-        let scene = GameScene(size: view.frame.size)
+        scene = GameScene(size: view.frame.size)
         let sKview = self.view as! SKView
         scene.scaleMode = .resizeFill
         
@@ -32,7 +33,26 @@ class GameViewController: UIViewController {
         
         
     }
-
+    // We are willing to become first responder to get shake motion
+    override var canBecomeFirstResponder: Bool {
+        get {
+            return true
+        }
+    }
+    
+    // Enable detection of shake motion
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            if scene.debug == true{
+                scene.debug = false
+                
+            }
+            else if scene.debug == false{
+                scene.debug = true
+            }
+        }
+    }
+    
     override var shouldAutorotate: Bool {
         return true
     }

@@ -55,7 +55,16 @@ class Planet: SKShapeNode{
         self.game.planets.append(self)
     
     }
+    func managedebug(){
+        if self.game.debug{
+            self.strokeColor = UIColor.orange
+        }
+        else{
+            self.strokeColor = UIColor.clear
+        }
+    }
     
     func update(){
+        managedebug()
     }
 }

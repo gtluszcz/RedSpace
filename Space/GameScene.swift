@@ -107,13 +107,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches{
-            if joystickone.inParentHierarchy(self) == false{
+            if joystickone.inParentHierarchy(self) == false && touch.location(in: self).x < (self.camera?.position.x)!{
                 print("                                        joystick 1 enabled")
                 joystickone = Joystick(scene: self, radius: 40, position: touch.location(in: self.camera!))
                 fingerone.insert(touch, at: 0)
                 self.cameraNode.addChild(joystickone)
             }
-            else if joystickone.inParentHierarchy(self) == true && joysticktwo.inParentHierarchy(self) == false{
+            if joysticktwo.inParentHierarchy(self) == false && touch.location(in: self).x > (self.camera?.position.x)!{
                 print("                                        joystick 2 enabled")
                 joysticktwo = Joystick(scene: self, radius: 40, position: touch.location(in: self.camera!))
             

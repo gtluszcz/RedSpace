@@ -28,6 +28,7 @@ class Enemy1: Enemy{
     var leftband: SKShapeNode!
     var rightband: SKShapeNode!
     var rotationbase: SKNode!
+    var firsthit = 0
     
     
     // MARK: - INIT
@@ -49,7 +50,7 @@ class Enemy1: Enemy{
         
         
         // set physics
-        self.physicsBody = SKPhysicsBody(texture: self.texture!, size: self.size)
+        self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width / 2)
         physicsBody!.categoryBitMask = PhysicsCategory.Enemy
         physicsBody!.collisionBitMask = PhysicsCategory.Planet | PhysicsCategory.Asteroid | PhysicsCategory.Enemy | PhysicsCategory.Player
         physicsBody!.contactTestBitMask = PhysicsCategory.Laser | PhysicsCategory.Mine
@@ -57,7 +58,7 @@ class Enemy1: Enemy{
         self.physicsBody?.linearDamping = 2.0
         
         //set properties
-        thrusters = 4000
+        thrusters = 5000
         rotatespeed = 0.2
         shootingrange = 200
         physicsBody?.mass = 10
@@ -72,10 +73,10 @@ class Enemy1: Enemy{
         self.addChild(rotationbase)
         rotationbase.addChild(leftband)
         rotationbase.addChild(rightband)
-        leftband.position.x = self.position.x - self.size.width / 2 + 5
-        rightband.position.x = self.position.x + self.size.width / 2 - 5
-        leftband.position.y = self.position.y + 50
-        rightband.position.y = self.position.y + 50
+        leftband.position.x = self.position.x - self.size.width / 2
+        rightband.position.x = self.position.x + self.size.width / 2
+        leftband.position.y = self.position.y + 40
+        rightband.position.y = self.position.y + 40
         if self.game.debug{
             leftband.fillColor = UIColor.orange
             rightband.fillColor = UIColor.orange
@@ -88,8 +89,8 @@ class Enemy1: Enemy{
             leftband.strokeColor = UIColor.clear
             rightband.strokeColor = UIColor.clear
         }
-        leftband.zRotation = CGFloat(Double.pi / -30)
-        rightband.zRotation = CGFloat(Double.pi / 30)
+        leftband.zRotation = CGFloat(Double.pi / -10)
+        rightband.zRotation = CGFloat(Double.pi / 10)
         
         
         //set aiming path
@@ -131,40 +132,96 @@ class Enemy1: Enemy{
     func autopilot(){
     rotateBaseToPlayer()
     moveRotation = baserotation
+    var intersected = false
+    var dodging = false
     //check for intersection
-   
     var aimrotation = baserotation
-        for planet in self.game.planets{
-            if leftband.intersects(planet){
+        // dodge other enemies to make clear shot
+        for enemy in self.game.enemies{
+            if enemy != self{
+            if leftband.intersects(enemy){
+                dodging = true
+                let chunk1 = self.parent as! Chunk
+                let chunk2 = enemy.parent as! Chunk
+                let dx = (self.position.x + chunk1.gridPos.x*chunk1.size.width) - (enemy.position.x + chunk2.gridPos.x*chunk2.size.width)
+                let dy = (self.position.y + chunk1.gridPos.y*chunk1.size.height) - (enemy.position.y + chunk2.gridPos.y*chunk2.size.height)
+                let rad = atan2(dy, dx)
+                self.baserotation = rad
                 
+                moveRotation = baserotation
+                rotationbase.zRotation = -self.zRotation + baserotation
+                break
+
+            }
+            else if rightband.intersects(enemy){
+                dodging = true
+                let chunk1 = self.parent as! Chunk
+                let chunk2 = enemy.parent as! Chunk
+                let dx = (self.position.x + chunk1.gridPos.x*chunk1.size.width) - (enemy.position.x + chunk2.gridPos.x*chunk2.size.width)
+                let dy = (self.position.y + chunk1.gridPos.y*chunk1.size.height) - (enemy.position.y + chunk2.gridPos.y*chunk2.size.height)
+                let rad = atan2(dy, dx)
+                self.baserotation = rad + CGFloat(Double.pi)
+           
+                moveRotation = baserotation
+                rotationbase.zRotation = -self.zRotation + baserotation
+                break
+               
+            }
+            }
+        }
+        //avoid planets
+        for planet in self.game.planets{
+            if leftband.intersects(planet) && firsthit != 2{
+                firsthit = 1
+                intersected = true
                 let chunk1 = self.parent as! Chunk
                 let chunk2 = planet.parent as! Chunk
                 let dx = (self.position.x + chunk1.gridPos.x*chunk1.size.width) - (planet.position.x + chunk2.gridPos.x*chunk2.size.width)
                 let dy = (self.position.y + chunk1.gridPos.y*chunk1.size.height) - (planet.position.y + chunk2.gridPos.y*chunk2.size.height)
                 let rad = atan2(dy, dx)
                 self.baserotation = rad
-                aimrotation = baserotation + CGFloat(Double.pi / 4)
+                if !aimray.intersects(self.game.Player){aimrotation = baserotation + CGFloat(Double.pi / 4)}
                 moveRotation = baserotation + CGFloat(Double.pi / 12)
                 rotationbase.zRotation = -self.zRotation + baserotation
+                break
                 
-
             }
-            else if rightband.intersects(planet){
-                
+            else if rightband.intersects(planet) && firsthit != 1{
+                firsthit = 2
+                intersected = true
                 let chunk1 = self.parent as! Chunk
                 let chunk2 = planet.parent as! Chunk
                 let dx = (self.position.x + chunk1.gridPos.x*chunk1.size.width) - (planet.position.x + chunk2.gridPos.x*chunk2.size.width)
                 let dy = (self.position.y + chunk1.gridPos.y*chunk1.size.height) - (planet.position.y + chunk2.gridPos.y*chunk2.size.height)
                 let rad = atan2(dy, dx)
                 self.baserotation = rad + CGFloat(Double.pi)
-                aimrotation = baserotation - CGFloat(Double.pi / 4)
+                if !aimray.intersects(self.game.Player){aimrotation = baserotation - CGFloat(Double.pi / 4)}
                 moveRotation = baserotation - CGFloat(Double.pi / 12)
                 rotationbase.zRotation = -self.zRotation + baserotation
-               
+                break
             }
         }
-        move(force: thrusters, angle: moveRotation + CGFloat(Double.pi / 2))
-            
+        if !intersected{
+            firsthit = 0
+        }
+
+        
+        let game = self.game
+        let chunk = self.parent as! Chunk
+        let dx = (self.position.x + chunk.gridPos.x*chunk.size.width) - game!.Player.position.x
+        let dy = (self.position.y + chunk.gridPos.y*chunk.size.height) - game!.Player.position.y
+        let dist = sqrt(dx*dx + dy*dy)
+        
+        //braking
+        if dist >= 130 {
+            move(force: thrusters, angle: moveRotation + CGFloat(Double.pi / 2))
+            self.physicsBody?.linearDamping = 2
+        }
+        else if dist < 130{
+            self.physicsBody?.linearDamping = 2.5
+        }
+        
+
         
         let rotate = SKAction.rotate(toAngle: aimrotation , duration: 0.15, shortestUnitArc: true)
         self.run(rotate)
@@ -236,9 +293,33 @@ class Enemy1: Enemy{
         
 
     }
+    
+    func managedebug(){
+        if self.game.debug{
+            leftband.fillColor = UIColor.orange
+            rightband.fillColor = UIColor.orange
+            leftband.strokeColor = UIColor.orange
+            rightband.strokeColor = UIColor.orange
+        }
+        else{
+            leftband.fillColor = UIColor.clear
+            rightband.fillColor = UIColor.clear
+            leftband.strokeColor = UIColor.clear
+            rightband.strokeColor = UIColor.clear
+        }
+        
+        if self.game.debug{
+            aimray.color = UIColor.blue
+        }
+        else{
+            aimray.color = UIColor.clear
+            
+        }
 
+    }
     //MARK: - FUNCTIONALITY
     override func update(){
+        managedebug()
         updateaimraylength()
         autopilot()
         shoot()

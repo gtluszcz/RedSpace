@@ -54,10 +54,77 @@ class Mine: SKSpriteNode{
         self.physicsBody?.contactTestBitMask = PhysicsCategory.Player
         self.physicsBody?.collisionBitMask = PhysicsCategory.None
         self.physicsBody?.fieldBitMask = PhysicsCategory.None
+        self.physicsBody?.linearDamping = 1.2
         
         
     }
+    
+    
     //MARK: - FUNCTIONALITY
+    
+    func move(force: CGFloat, angle: CGFloat){
+        self.physicsBody?.applyForce(CGVector(dx: force * cos(angle), dy: force * sin(angle)))
+    }
+    
+    func changechunks(){
+        if self.physicsBody?.velocity != CGVector(dx: 0, dy: 0){
+            let oldvelocity = self.physicsBody?.velocity
+            let oldangularvelocity = self.physicsBody?.angularVelocity
+            let oldchunk = self.parent as! Chunk
+            if self.position.x > oldchunk.size.width / 2{
+                for chunk in self.game.chunks{
+                    if chunk.intersects(self) && chunk.position.y == oldchunk.position.y && chunk != oldchunk && chunk.position.x > oldchunk.position.x{
+                        self.removeFromParent()
+                        chunk.addChild(self)
+                        self.physicsBody?.velocity = oldvelocity!
+                        self.physicsBody?.angularVelocity = oldangularvelocity!
+                        self.position.x = (oldchunk.size.width / -2) + self.position.x - oldchunk.size.width / 2
+                        
+                        
+                    }
+                }
+                
+            }
+            else if self.position.x < oldchunk.size.width / -2{
+                for chunk in self.game.chunks{
+                    if  chunk.intersects(self) && chunk.position.y == oldchunk.position.y && chunk != oldchunk && chunk.position.x < oldchunk.position.x{
+                        self.removeFromParent()
+                        chunk.addChild(self)
+                        self.physicsBody?.velocity = oldvelocity!
+                        self.physicsBody?.angularVelocity = oldangularvelocity!
+                        self.position.x = (oldchunk.size.width / 2) + self.position.x - oldchunk.size.width / -2
+                    }
+                }
+            }
+            else if self.position.y > oldchunk.size.height / 2{
+                for chunk in self.game.chunks{
+                    if chunk.intersects(self) && chunk.position.x == oldchunk.position.x && chunk != oldchunk && chunk.position.y > oldchunk.position.y{
+                        self.removeFromParent()
+                        chunk.addChild(self)
+                        self.physicsBody?.velocity = oldvelocity!
+                        self.physicsBody?.angularVelocity = oldangularvelocity!
+                        self.position.y = (oldchunk.size.height / -2) + self.position.y - oldchunk.size.height / 2
+                        
+                    }
+                }
+            }
+            else if self.position.y < oldchunk.size.height / -2{
+                for chunk in self.game.chunks{
+                    if chunk.intersects(self) && chunk.position.x == oldchunk.position.x && chunk != oldchunk && chunk.position.y < oldchunk.position.y{
+                        self.removeFromParent()
+                        chunk.addChild(self)
+                        self.physicsBody?.velocity = oldvelocity!
+                        self.physicsBody?.angularVelocity = oldangularvelocity!
+                        self.position.y = (oldchunk.size.height / 2) + self.position.y - oldchunk.size.height / -2
+                        
+                        
+                    }
+                }
+            }
+        }
+    }
+
+    
     func autotarget(){
         let game = self.game
         let chunk = self.parent as! Chunk
@@ -82,6 +149,33 @@ class Mine: SKSpriteNode{
         
         
     }
+    func autotarget2(){
+        let game = self.game
+        let chunk = self.parent as! Chunk
+        let dx = (self.position.x + chunk.gridPos.x*chunk.size.width) - game!.Player.position.x
+        let dy = (self.position.y + chunk.gridPos.y*chunk.size.height) - game!.Player.position.y
+        let rad = atan2(dy, dx)
+        
+        move(force: 6, angle: rad + CGFloat(Double.pi))
+        
+        let dx2 = self.physicsBody?.velocity.dx
+        let dy2 = self.physicsBody?.velocity.dy
+        let rad2 = atan2(dy2!, dx2!)
+
+        let rotate = SKAction.rotate(toAngle: rad2 + CGFloat(Double.pi * 1.5), duration: 0, shortestUnitArc: true)
+        self.run(rotate)
+        
+        
+        //add exhaust
+        if !self.exhaustshown{
+            self.addChild(exhaust!)
+            self.exhaustshown = true
+        }
+        
+        
+        
+    }
+
     func explode(){
         print("  <*> exploded")
         self.exploded = false
@@ -93,7 +187,8 @@ class Mine: SKSpriteNode{
     //MARK: - UPDATE
     func update(){
         if self.activated == true{
-            autotarget()
+            changechunks()
+            autotarget2()
         }
         if self.exploded{
             explode()

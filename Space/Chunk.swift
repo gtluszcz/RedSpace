@@ -15,6 +15,7 @@ class Chunk: SKSpriteNode{
     var game: GameScene!
     var gridPos = CGPoint(x: 0, y: 0)
     var textbox = SKLabelNode()
+    var outline: SKShapeNode!
     var dim : CGFloat = 0
     var lasttimemeteor = NSDate()
     var meteorrarity = 1.0
@@ -74,7 +75,7 @@ class Chunk: SKSpriteNode{
         
         //Bounding edges
         let path = CGPath(rect: self.frame, transform: nil)
-        let outline = SKShapeNode(path: path)
+        outline = SKShapeNode(path: path)
         outline.strokeColor = UIColor.black
         outline.zPosition = 99
         addChild(outline)
@@ -270,7 +271,24 @@ class Chunk: SKSpriteNode{
         
     }
     
+    func managedebug(){
+        if self.game.debug{
+            /// Testing positions textbox
+            textbox.fontColor = UIColor.white
+            
+            outline.strokeColor = UIColor.black
+            
+
+        }
+        else if !self.game.debug{
+            textbox.fontColor = UIColor.clear
+            
+            outline.strokeColor = UIColor.clear
+        }
+    }
+    
     func update(){
+        managedebug()
         if lasttimemeteor.timeIntervalSinceNow < -meteorrarity && self.game.asteroids.count < 100{
             lasttimemeteor = NSDate()
             spawnflyingasteroid()
