@@ -213,9 +213,14 @@ class Enemy1: Enemy{
         let dist = sqrt(dx*dx + dy*dy)
         
         //braking
-        if dist >= 130 {
+        if dist >= 130{
             move(force: thrusters, angle: moveRotation + CGFloat(Double.pi / 2))
             self.physicsBody?.linearDamping = 2
+        }
+        else if dist > 130{
+            move(force: thrusters, angle: moveRotation + CGFloat(Double.pi / 2))
+            self.physicsBody?.linearDamping = 2
+
         }
         else if dist < 130{
             self.physicsBody?.linearDamping = 2.5
@@ -277,13 +282,13 @@ class Enemy1: Enemy{
             canshoot = true
         }
         
-        if lasttimeshoot.timeIntervalSinceNow < -shootingrarity && !intersectsplanet && aimray.intersects(self.game.Player) && !intersectsenemy{
+        if lasttimeshoot.timeIntervalSinceNow < -shootingrarity && aimray.intersects(self.game.Player) && !intersectsenemy{
             canshoot = true
         }
         
         if canshoot{
             lasttimeshoot = NSDate()
-            let laser = Laser(scene: self.game, laserlvl: 2, damage: self.damage ,speed: self.laserspeed, aimdirection: self.zRotation + CGFloat(Double.pi / 2))
+            let laser = Laser(scene: self.game, laserlvl: 2, damage: self.damage ,speed: self.laserspeed, aimdirection: self.zRotation + CGFloat(Double.pi / 2), kind: 2)
             self.game.addChild(laser)
             let chunk = self.parent as! Chunk
             laser.position.x = self.position.x + chunk.gridPos.x*chunk.size.width + 40 * cos(zRotation + CGFloat(Double.pi / 2))

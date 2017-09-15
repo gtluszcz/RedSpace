@@ -9,10 +9,13 @@
 /* Begin PBXBuildFile section */
 		AE14D6741E64980A00927E50 /* Planet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE14D6731E64980A00927E50 /* Planet.swift */; };
 		AE16F8F41E6B0156002C8FE5 /* Mine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE16F8F31E6B0156002C8FE5 /* Mine.swift */; };
+		AE235F2E1F69624500E005BB /* Healthandshieldbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE235F2D1F69624500E005BB /* Healthandshieldbar.swift */; };
+		AE235F351F69722A00E005BB /* RussoOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE235F341F69722A00E005BB /* RussoOne-Regular.ttf */; };
 		AE25D6311E6351C5005E9D0E /* Chunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE25D6301E6351C5005E9D0E /* Chunk.swift */; };
 		AE2A10391E6B10F800795807 /* Physics_bitmasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2A10381E6B10F800795807 /* Physics_bitmasks.swift */; };
 		AE369F0D1E815CD6004A9B98 /* Asteroid.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE369F0C1E815CD6004A9B98 /* Asteroid.swift */; };
 		AE6176851F2F864200D08A57 /* Spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE6176841F2F864200D08A57 /* Spark.sks */; };
+		AE6F9A5F1F6816B5008F904B /* GUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6F9A5E1F6816B5008F904B /* GUI.swift */; };
 		AE8D75231E69C954008AF821 /* Minefield.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8D75221E69C954008AF821 /* Minefield.swift */; };
 		AE8D9C121F2E364800E491B8 /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8D9C111F2E364800E491B8 /* Enemy.swift */; };
 		AE8D9C141F2E3A8100E491B8 /* Enemy1.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8D9C131F2E3A8100E491B8 /* Enemy1.swift */; };
@@ -55,22 +58,25 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AE14D6731E64980A00927E50 /* Planet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Planet.swift; sourceTree = "<group>"; };
-		AE16F8F31E6B0156002C8FE5 /* Mine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mine.swift; sourceTree = "<group>"; };
-		AE25D6301E6351C5005E9D0E /* Chunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chunk.swift; sourceTree = "<group>"; };
-		AE2A10381E6B10F800795807 /* Physics_bitmasks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Physics_bitmasks.swift; sourceTree = "<group>"; };
-		AE369F0C1E815CD6004A9B98 /* Asteroid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asteroid.swift; sourceTree = "<group>"; };
+		AE14D6731E64980A00927E50 /* Planet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Planet.swift; path = Space/Planet.swift; sourceTree = SOURCE_ROOT; };
+		AE16F8F31E6B0156002C8FE5 /* Mine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Mine.swift; path = Space/Mine.swift; sourceTree = SOURCE_ROOT; };
+		AE235F2D1F69624500E005BB /* Healthandshieldbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Healthandshieldbar.swift; sourceTree = "<group>"; };
+		AE235F341F69722A00E005BB /* RussoOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RussoOne-Regular.ttf"; sourceTree = "<group>"; };
+		AE25D6301E6351C5005E9D0E /* Chunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Chunk.swift; path = Space/Chunk.swift; sourceTree = SOURCE_ROOT; };
+		AE2A10381E6B10F800795807 /* Physics_bitmasks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Physics_bitmasks.swift; path = Space/Physics_bitmasks.swift; sourceTree = SOURCE_ROOT; };
+		AE369F0C1E815CD6004A9B98 /* Asteroid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Asteroid.swift; path = Space/Asteroid.swift; sourceTree = SOURCE_ROOT; };
 		AE6176841F2F864200D08A57 /* Spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Spark.sks; sourceTree = "<group>"; };
-		AE8D75221E69C954008AF821 /* Minefield.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Minefield.swift; sourceTree = "<group>"; };
-		AE8D9C111F2E364800E491B8 /* Enemy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
-		AE8D9C131F2E3A8100E491B8 /* Enemy1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enemy1.swift; sourceTree = "<group>"; };
+		AE6F9A5E1F6816B5008F904B /* GUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GUI.swift; sourceTree = "<group>"; };
+		AE8D75221E69C954008AF821 /* Minefield.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Minefield.swift; path = Space/Minefield.swift; sourceTree = SOURCE_ROOT; };
+		AE8D9C111F2E364800E491B8 /* Enemy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Enemy.swift; path = Space/Enemy.swift; sourceTree = SOURCE_ROOT; };
+		AE8D9C131F2E3A8100E491B8 /* Enemy1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Enemy1.swift; path = Space/Enemy1.swift; sourceTree = SOURCE_ROOT; };
 		AE8D9C161F2E3FC700E491B8 /* Enemy2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enemy2.swift; sourceTree = "<group>"; };
-		AE99C9A51E9A9F8C00E72B7A /* Joystick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Joystick.swift; sourceTree = "<group>"; };
+		AE99C9A51E9A9F8C00E72B7A /* Joystick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Joystick.swift; path = Space/Joystick.swift; sourceTree = SOURCE_ROOT; };
 		AECD43E71E63236C00DE3BB8 /* Space.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Space.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AECD43EA1E63236C00DE3BB8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AECD43EE1E63236C00DE3BB8 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
-		AECD43F01E63236C00DE3BB8 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		AECD43F21E63236C00DE3BB8 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		AECD43EA1E63236C00DE3BB8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Space/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
+		AECD43EE1E63236C00DE3BB8 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Actions.sks; path = Space/Actions.sks; sourceTree = SOURCE_ROOT; };
+		AECD43F01E63236C00DE3BB8 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GameScene.swift; path = Space/GameScene.swift; sourceTree = SOURCE_ROOT; };
+		AECD43F21E63236C00DE3BB8 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GameViewController.swift; path = Space/GameViewController.swift; sourceTree = SOURCE_ROOT; };
 		AECD43F51E63236C00DE3BB8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AECD43F71E63236D00DE3BB8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AECD43FA1E63236D00DE3BB8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -84,10 +90,10 @@
 		AECD441E1E6335E400DE3BB8 /* Spaceship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spaceship.swift; sourceTree = SOURCE_ROOT; };
 		AED25C201EA404240039F86C /* Explode1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Explode1.sks; path = ../Explode1.sks; sourceTree = "<group>"; };
 		AED25C211EA404240039F86C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		AED25C251EA410C20039F86C /* Laser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Laser.swift; path = ../Laser.swift; sourceTree = "<group>"; };
-		AED25C271EA624A40039F86C /* Collisions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Collisions.swift; path = ../Collisions.swift; sourceTree = "<group>"; };
+		AED25C251EA410C20039F86C /* Laser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Laser.swift; sourceTree = SOURCE_ROOT; };
+		AED25C271EA624A40039F86C /* Collisions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collisions.swift; sourceTree = SOURCE_ROOT; };
 		AED8B8461E8063560020F575 /* mineExhaust.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = mineExhaust.sks; sourceTree = "<group>"; };
-		AED916BC1E81537E00B4DD98 /* AsteroidFIeld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsteroidFIeld.swift; sourceTree = "<group>"; };
+		AED916BC1E81537E00B4DD98 /* AsteroidFIeld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsteroidFIeld.swift; path = Space/AsteroidFIeld.swift; sourceTree = SOURCE_ROOT; };
 		AEF89DB41E6AFCF5007E213B /* Starfield.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Starfield.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,6 +122,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AE235F2F1F696B6B00E005BB /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				AE235F341F69722A00E005BB /* RussoOne-Regular.ttf */,
+			);
+			name = fonts;
+			sourceTree = "<group>";
+		};
+		AE6F9A571F680F12008F904B /* interface */ = {
+			isa = PBXGroup;
+			children = (
+				AE235F2D1F69624500E005BB /* Healthandshieldbar.swift */,
+				AE6F9A5E1F6816B5008F904B /* GUI.swift */,
+			);
+			name = interface;
+			sourceTree = "<group>";
+		};
 		AE8D9C151F2E3A8D00E491B8 /* enemies */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,6 +172,8 @@
 		AECD43E91E63236C00DE3BB8 /* Space */ = {
 			isa = PBXGroup;
 			children = (
+				AE235F2F1F696B6B00E005BB /* fonts */,
+				AE6F9A571F680F12008F904B /* interface */,
 				AE8D9C151F2E3A8D00E491B8 /* enemies */,
 				AECD441E1E6335E400DE3BB8 /* Spaceship.swift */,
 				AE8D9C111F2E364800E491B8 /* Enemy.swift */,
@@ -314,6 +339,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE235F351F69722A00E005BB /* RussoOne-Regular.ttf in Resources */,
 				AEF89DB51E6AFCF5007E213B /* Starfield.sks in Resources */,
 				AECD43F61E63236C00DE3BB8 /* Main.storyboard in Resources */,
 				AECD43F81E63236D00DE3BB8 /* Assets.xcassets in Resources */,
@@ -357,6 +383,7 @@
 				AED25C281EA624A40039F86C /* Collisions.swift in Sources */,
 				AED25C261EA410C20039F86C /* Laser.swift in Sources */,
 				AE14D6741E64980A00927E50 /* Planet.swift in Sources */,
+				AE235F2E1F69624500E005BB /* Healthandshieldbar.swift in Sources */,
 				AE8D9C171F2E3FC700E491B8 /* Enemy2.swift in Sources */,
 				AECD441F1E6335E400DE3BB8 /* Spaceship.swift in Sources */,
 				AE8D9C121F2E364800E491B8 /* Enemy.swift in Sources */,
@@ -364,6 +391,7 @@
 				AE99C9A61E9A9F8C00E72B7A /* Joystick.swift in Sources */,
 				AECD43EB1E63236C00DE3BB8 /* AppDelegate.swift in Sources */,
 				AE369F0D1E815CD6004A9B98 /* Asteroid.swift in Sources */,
+				AE6F9A5F1F6816B5008F904B /* GUI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,8 +8,9 @@
 
 import SpriteKit
 import Foundation
+import GameplayKit
 
-class Spaceship: SKSpriteNode{ 
+class Spaceship: SKSpriteNode{
     //MARK: PROPERTIES
     var game: GameScene!
     var dim: CGFloat!
@@ -34,12 +35,16 @@ class Spaceship: SKSpriteNode{
     var health: CGFloat = 500
     var shieldhealth: CGFloat = 500
     var shield: SKSpriteNode!
-    var regenerationrate: CGFloat = 0.2
+    var regenerationrate: CGFloat = 0.3
+    var lastshieldamount: CGFloat = 500
+    
+    
+   
     
     // MARK: - INIT
     
     init(scene: GameScene, size: CGSize){
-        let texture = SKTexture(imageNamed: "statek")
+        let texture = SKTexture(imageNamed: "statek_orange")
         super.init(texture: texture, color: UIColor.clear,size: texture.size())
         self.game = scene
         self.dim = max(size.width, size.height) / 100
@@ -175,21 +180,28 @@ class Spaceship: SKSpriteNode{
             shieldhealth = maxshieldhealth
         }
         
-        if shieldhealth >= 500 {
+        if shieldhealth != lastshieldamount{
+            lastshieldamount = shieldhealth
+            self.game.gui.setNeedsDisplay(self.game.gui.shieldtext)
+            self.game.gui.setNeedsDisplay(self.game.gui.shieldbar)
+            
+        }
+        
+        if shieldhealth/maxshieldhealth >= 1 {
             shield.texture = SKTexture(imageNamed: "shield3")
             shield.size = CGSize(width: 65, height: 65)
             shield.position.y = 0
             shield.isHidden = false
 
         }
-        else if shieldhealth >= 250{
+        else if shieldhealth/maxshieldhealth >= 0.6{
             shield.texture = SKTexture(imageNamed: "shield2")
             shield.size = CGSize(width: 60, height: 50)
             shield.position.y = 5
             shield.isHidden = false
 
         }
-        else if shieldhealth >= 50 {
+        else if shieldhealth/maxshieldhealth >= 0.3 {
             shield.texture = SKTexture(imageNamed: "shield1")
             shield.size = CGSize(width: 60, height: 50)
             shield.position.y =  5
@@ -204,17 +216,20 @@ class Spaceship: SKSpriteNode{
     func damage(damage: CGFloat){
         if shieldhealth >= damage{
             shieldhealth -= damage
+            self.game.gui.setNeedsDisplay(self.game.gui.shieldtext)
+            self.game.gui.setNeedsDisplay(self.game.gui.shieldbar)
         }
         else if shieldhealth < damage{
             var dmg = damage
             dmg -= shieldhealth
             shieldhealth = 0
             health -= dmg
+            self.game.gui.setNeedsDisplay(self.game.gui.shieldtext)
+            self.game.gui.setNeedsDisplay(self.game.gui.shieldbar)
+            self.game.gui.setNeedsDisplay(self.game.gui.healthtext)
+            self.game.gui.setNeedsDisplay(self.game.gui.healthbar)
         }
-        
-        
         indicatedamage(damage: damage)
-
 
     }
     
@@ -238,6 +253,7 @@ class Spaceship: SKSpriteNode{
     
     func update(){
         manageshields()
+         
     }
 }
 

@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import UIKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
     
@@ -21,6 +22,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var joysticktwo = Joystick()
     var fingerone = [UITouch]()
     var fingertwo = [UITouch]()
+    var gui: GUI!
     
     //Groups
     var allsprites = [Any]()
@@ -33,6 +35,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var lasers = [Laser]()
     var enemies = [Enemy]()
 
+    
+    var lasttimeupdate = NSDate()
     var debug = false
     //MARK: - INIT
     
@@ -69,6 +73,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //add player on screen
         self.addChild(Player)
         
+    
+        
+        
         //set star background
         Starfield = SKEmitterNode(fileNamed: "Starfield")
         Starfield.zPosition = -1
@@ -94,13 +101,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.addChild(chunk)
         }
         
-        
 
     }
     
     override func didMove(to view: SKView) {
+        //let rect = (self.view?.frame)!
+        let rect = CGRect(x: 10, y: 10, width: (self.view?.frame.width)! / 2, height: (self.view?.frame.width)! / 13)
+        gui = GUI(frame: rect, game: self)
+        gui.backgroundColor = UIColor.clear
+        gui.alpha = 0.8
+        gui.isMultipleTouchEnabled = true
+        self.view?.addSubview(gui)
         
-
     }
     
     //MARK: - TOUCHES
@@ -121,7 +133,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 self.cameraNode.addChild(joysticktwo)
             }
         }
-//        print("touch")
+        print("touch")
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches{
@@ -218,6 +230,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         else if collision == PhysicsCategory.Laser | PhysicsCategory.Enemy{
             collisions.contactLaserEnemy(contact: contact)
         }
+            
+            //TO DO:
+            // Handle Mine collision with Enemy
+        else if collision == PhysicsCategory.Laser | PhysicsCategory.Enemy{
+            collisions.contactLaserEnemy(contact: contact)
+        }
+            // Handle Mine collision with Asteroid
+        else if collision == PhysicsCategory.Laser | PhysicsCategory.Enemy{
+            collisions.contactLaserEnemy(contact: contact)
+        }
+            // Handle Mine collision with Planet
+        else if collision == PhysicsCategory.Laser | PhysicsCategory.Enemy{
+            collisions.contactLaserEnemy(contact: contact)
+        }
+
 
 
 
@@ -228,10 +255,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        
         handlejoysticks()
         allnodesupdate()
         updateChunks()
-      
+        lasttimeupdate = NSDate()
     }
     
     func handlejoysticks(){

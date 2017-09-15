@@ -18,8 +18,14 @@ class Laser: SKSpriteNode{
     
     //MARK: - INIT
     
-    init(scene: GameScene, laserlvl: Int, damage: CGFloat, speed: CGFloat, aimdirection: CGFloat){
-        let texture = SKTexture(imageNamed: "laserRed03")
+    init(scene: GameScene, laserlvl: Int, damage: CGFloat, speed: CGFloat, aimdirection: CGFloat, kind: Int=1){
+        var texture = SKTexture(imageNamed: "laserRed03_orange")
+        if kind == 1{
+            texture = SKTexture(imageNamed: "laserRed03_orange")
+        }
+        else if kind == 2{
+            texture = SKTexture(imageNamed: "laserRed03")
+        }
         super.init(texture: texture, color: UIColor.clear, size: texture.size())
         self.game = scene
         setup(laserlvl: laserlvl, damage: damage, speed: speed, aimdirection: aimdirection)
