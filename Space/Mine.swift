@@ -51,7 +51,7 @@ class Mine: SKSpriteNode{
         //set physics
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.categoryBitMask = PhysicsCategory.Mine
-        self.physicsBody?.contactTestBitMask = PhysicsCategory.Player
+        self.physicsBody?.contactTestBitMask = PhysicsCategory.Player | PhysicsCategory.Asteroid | PhysicsCategory.Planet
         self.physicsBody?.collisionBitMask = PhysicsCategory.None
         self.physicsBody?.fieldBitMask = PhysicsCategory.None
         self.physicsBody?.linearDamping = 1.2

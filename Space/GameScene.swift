@@ -201,27 +201,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if collision == PhysicsCategory.Minefield | PhysicsCategory.Player{
             collisions.contactPlayerBombfield(contact: contact)
         }
-        
         // Handle Spaceship collision with Minefield
         else if collision == PhysicsCategory.Mine | PhysicsCategory.Player{
             collisions.contactPlayerMine(contact: contact)
         }
-        
         // Handle Laser collision with Asteroid
         else if collision == PhysicsCategory.Laser | PhysicsCategory.Asteroid{
             collisions.contactLaserAsteroid(contact: contact)
         }
-            
         // Handle Laser collision with Planet
         else if collision == PhysicsCategory.Laser | PhysicsCategory.Planet{
             collisions.contactLaserPlanet(contact: contact)
         }
-
         // Handle Laser collision with Mine
         else if collision == PhysicsCategory.Laser | PhysicsCategory.Mine{
             collisions.contactLaserMine(contact: contact)
         }
-        
         // Handle Laser collision with Player
         else if collision == PhysicsCategory.Laser | PhysicsCategory.Player{
             collisions.contactLaserPlayer(contact: contact)
@@ -230,19 +225,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         else if collision == PhysicsCategory.Laser | PhysicsCategory.Enemy{
             collisions.contactLaserEnemy(contact: contact)
         }
-            
-            //TO DO:
-            // Handle Mine collision with Enemy
-        else if collision == PhysicsCategory.Laser | PhysicsCategory.Enemy{
-            collisions.contactLaserEnemy(contact: contact)
+        // Handle Mine collision with Enemy
+        else if collision == PhysicsCategory.Mine | PhysicsCategory.Enemy{
+            collisions.contactMineEnemy(contact: contact)
         }
-            // Handle Mine collision with Asteroid
-        else if collision == PhysicsCategory.Laser | PhysicsCategory.Enemy{
-            collisions.contactLaserEnemy(contact: contact)
+        // Handle Mine collision with Asteroid
+        else if collision == PhysicsCategory.Mine | PhysicsCategory.Asteroid{
+            collisions.contactMineAsteroid(contact: contact)
         }
-            // Handle Mine collision with Planet
-        else if collision == PhysicsCategory.Laser | PhysicsCategory.Enemy{
-            collisions.contactLaserEnemy(contact: contact)
+        // Handle Mine collision with Planet
+        else if collision == PhysicsCategory.Mine | PhysicsCategory.Planet{
+            collisions.contactMinePlanet(contact: contact)
         }
 
 

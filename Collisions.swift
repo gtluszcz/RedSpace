@@ -117,6 +117,47 @@ class Collisions{
         }
     }
     
+    //Contact: Mine - Enemy
+    func contactMineEnemy(contact: SKPhysicsContact){
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Mine && contact.bodyB.categoryBitMask == PhysicsCategory.Enemy{
+            let enemy = contact.bodyB.node as! Enemy
+            let mine = contact.bodyA.node as! Mine
+            mineenemy(mine: mine, enemy: enemy, contact: contact)        }
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Enemy && contact.bodyB.categoryBitMask == PhysicsCategory.Mine{
+            let enemy = contact.bodyA.node as! Enemy
+            let mine = contact.bodyB.node as! Mine
+            mineenemy(mine: mine, enemy: enemy, contact: contact)
+        }
+    }
+    
+    //Contact: Mine - Asteroid
+    func contactMineAsteroid(contact: SKPhysicsContact){
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Mine && contact.bodyB.categoryBitMask == PhysicsCategory.Asteroid{
+            let asteroid = contact.bodyB.node as! Asteroid
+            let mine = contact.bodyA.node as! Mine
+            mineasteroid(mine: mine, asteroid: asteroid, contact: contact)
+        }
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Asteroid && contact.bodyB.categoryBitMask == PhysicsCategory.Mine{
+            let asteroid = contact.bodyA.node as! Asteroid
+            let mine = contact.bodyB.node as! Mine
+            mineasteroid(mine: mine, asteroid: asteroid, contact: contact)
+        }
+    }
+    
+    //Contact: Mine - Planet
+    func contactMinePlanet(contact: SKPhysicsContact){
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Mine && contact.bodyB.categoryBitMask == PhysicsCategory.Planet{
+            let planet = contact.bodyB.node as! Planet
+            let mine = contact.bodyA.node as! Mine
+            mineplanet(mine: mine, planet: planet, contact: contact)
+        }
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Planet && contact.bodyB.categoryBitMask == PhysicsCategory.Mine{
+            let planet = contact.bodyA.node as! Planet
+            let mine = contact.bodyB.node as! Mine
+            mineplanet(mine: mine, planet: planet, contact: contact)
+        }
+    }
+    
     
     
     
@@ -218,6 +259,43 @@ class Collisions{
         
         
     }
+    
+    //MARK: - Contact: Mine - Enemy
+    func mineenemy(mine: Mine, enemy: Enemy, contact: SKPhysicsContact){
+        if mine.activated{
+            print(" <|> enemy hit mine in air")
+            mine.exploded = true
+            //Make explosion
+            //let point = CGPoint(x: mine.position.x + (mine.parent?.position.x)! , y: mine.position.y + (mine.parent?.position.y)!)
+            let point = contact.contactPoint
+            makeexplosion(point: point, size: CGSize(width: 140, height: 140), percentage: 1)
+        }
+    }
+    
+    //MARK: - Contact: Mine - Asteroid
+    func mineasteroid(mine: Mine, asteroid: Asteroid, contact: SKPhysicsContact){
+        if mine.activated{
+            print(" <|> asteroid hit mine in air")
+            mine.exploded = true
+            //Make explosion
+            //let point = CGPoint(x: mine.position.x + (mine.parent?.position.x)! , y: mine.position.y + (mine.parent?.position.y)!)
+            let point = contact.contactPoint
+            makeexplosion(point: point, size: CGSize(width: 140, height: 140), percentage: 1.3)
+        }
+    }
+    
+    //MARK: - Contact: Mine - Asteroid
+    func mineplanet(mine: Mine, planet: Planet, contact: SKPhysicsContact){
+        if mine.activated{
+            print(" <|> mine hit planet in air")
+            mine.exploded = true
+            //Make explosion
+            //let point = CGPoint(x: mine.position.x + (mine.parent?.position.x)! , y: mine.position.y + (mine.parent?.position.y)!)
+            let point = contact.contactPoint
+            makeexplosion(point: point, size: CGSize(width: 140, height: 140), percentage: 1)
+        }
+    }
+
     
     
     
